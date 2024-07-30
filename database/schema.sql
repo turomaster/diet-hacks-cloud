@@ -64,7 +64,7 @@ ALTER TABLE "posts" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
 ALTER TABLE "posts" ADD FOREIGN KEY ("categoryId") REFERENCES "categories" ("id");
 
-ALTER TABLE "comments" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("id");
+ALTER TABLE "comments" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "comments" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
