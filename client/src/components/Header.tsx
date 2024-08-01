@@ -15,19 +15,11 @@ export function Header({ isMobile }: Props) {
             : 'flex justify-between items-center px-10 h-14'
         }>
         <div className="flex items-center space-x-2">
-          {isMobile ? (
-            <RxHamburgerMenu className="text-2xl" />
-          ) : (
-            <IoLogoDocker className="text-2xl" />
-          )}
+          <IoLogoDocker className="text-2xl" />
           <p className="text-lg">Diet Hacks</p>
         </div>
         <div>
-          {isMobile ? (
-            <IoLogoDocker className="text-2xl" />
-          ) : (
-            <RxHamburgerMenu className="text-2xl" />
-          )}
+          <RxHamburgerMenu className="text-2xl" />
         </div>
       </div>
     </header>

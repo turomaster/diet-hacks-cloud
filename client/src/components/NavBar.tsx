@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { Category } from '../lib/data';
 
-export function NavBar() {
+type Props = {
+  categories: Category[];
+};
+
+export function NavBar({ categories }: Props) {
   return (
     <div className="bg-accent-gray shadow-md w-56">
       <nav>
@@ -17,21 +22,13 @@ export function NavBar() {
           <hr className="my-6 mx-auto w-40 border-black border-opacity-20" />
           <div className="basis-full">
             <li className="mb-2 font-bold">Categories</li>
-            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to="#">Breakfast</Link>
-            </li>
-            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to="#">Dinner</Link>
-            </li>
-            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to="#">Snacks</Link>
-            </li>
-            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to="#">Fast Food</Link>
-            </li>
-            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to="#">Ingredient Swaps</Link>
-            </li>
+            {categories.map((category, index) => (
+              <li
+                key={category.name + index}
+                className='className="rounded-lg mx-4 mb-4 hover:bg-gray-200'>
+                <Link to="#">{category.name}</Link>
+              </li>
+            ))}
           </div>
         </ul>
       </nav>
