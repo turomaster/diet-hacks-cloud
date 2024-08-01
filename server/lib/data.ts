@@ -16,3 +16,8 @@ export type Comment = {
   content: string;
   createdAt: string;
 };
+
+export type Category = {
+  id: number;
+  name: string;
+};

@@ -3,7 +3,7 @@ import 'dotenv/config';
 import express from 'express';
 import pg, { DatabaseError } from 'pg';
 import { ClientError, errorMiddleware } from './lib/index.js';
-import { Comment, Post } from './lib/data.js';
+import { Category, Comment, Post } from './lib/data.js';
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -172,6 +172,20 @@ app.post('/api/comments/:postId', async (req, res, next) => {
     } else {
       next(err);
     }
+  }
+});
+
+app.get('/api/categories', async (req, res, next) => {
+  try {
+    const sql = `
+      select "name"
+        from "categories"
+    `;
+    const result = await db.query<Category>(sql);
+    const categories = result.rows;
+    res.json(categories);
+  } catch (err) {
+    next(err);
   }
 });
 
