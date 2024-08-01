@@ -22,9 +22,9 @@ export function NavBar({ categories }: Props) {
           <hr className="my-6 mx-auto w-40 border-black border-opacity-20" />
           <div className="basis-full">
             <li className="mb-2 font-bold">Categories</li>
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <li
-                key={category.id + index}
+                key={category.id}
                 className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
                 <Link to="#">{category.name}</Link>
               </li>
