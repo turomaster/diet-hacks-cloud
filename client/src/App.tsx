@@ -47,9 +47,9 @@ export function App() {
   return (
     <>
       <Header isMobile={isMobile} />
-      <div className="flex flex-wrap h-full">
+      <div className="flex h-full">
         {!isMobile && <NavBar />}
-        <div className="flex">
+        <div className="flex mx-auto">
           <div className="basis-full p-4">
             {posts.map((post, index) => (
               <Card key={post.title + index} post={post} />

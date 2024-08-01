@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 #root {
-  max-width: 1280px;
   height: 100vh;
-  margin: 0 auto;
 }
 
 body {
   font-family: 'Open Sans', sans-serif;
+}
+
+nav ul li {
+  padding: 0.5rem 0;
 }

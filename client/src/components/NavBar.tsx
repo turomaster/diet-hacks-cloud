@@ -1,17 +1,38 @@
+import { Link } from 'react-router-dom';
+
 export function NavBar() {
   return (
-    <div className="bg-accent-gray px-2 pt-6">
+    <div className="bg-accent-gray shadow-md w-56">
       <nav>
-        <ul className="flex flex-col items-center">
-          <li className="text-lg mb-2">Explore</li>
-          <li>Home</li>
-          <li>Trending</li>
-          <li>
-            <hr className="h-px my-4 bg-gray-200 border-0" />
-          </li>
-          <li className="text-lg mb-2">Categories</li>
-          <li>Fast Food</li>
-          <li>Snacks</li>
+        <ul className="flex flex-col text-center">
+          <div className="basis-full">
+            <li className="mb-2 font-bold">Explore</li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Home</Link>
+            </li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Trending</Link>
+            </li>
+          </div>
+          <hr className="my-6 mx-auto w-40 border-black border-opacity-20" />
+          <div className="basis-full">
+            <li className="mb-2 font-bold">Categories</li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Breakfast</Link>
+            </li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Dinner</Link>
+            </li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Snacks</Link>
+            </li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Fast Food</Link>
+            </li>
+            <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+              <Link to="#">Ingredient Swaps</Link>
+            </li>
+          </div>
         </ul>
       </nav>
     </div>
