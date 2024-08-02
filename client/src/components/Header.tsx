@@ -1,12 +1,24 @@
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { IoLogoDocker } from 'react-icons/io5';
 import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
+import { MobileMenu } from './MobileMenu';
 
 type Props = {
-  isMobile: boolean;
+  isMobile: boolean | null;
 };
 
 export function Header({ isMobile }: Props) {
+  const [isComponentVisible, setIsComponentVisible] = useState(false);
+
+  function handleMenuClick() {
+    if (!isComponentVisible) {
+      setIsComponentVisible(true);
+    } else {
+      setIsComponentVisible(false);
+    }
+  }
+
   return (
     <>
       <header className="bg-accent-gray">
@@ -21,11 +33,14 @@ export function Header({ isMobile }: Props) {
             <p className="text-lg">Diet Hacks</p>
           </div>
           <div>
-            <RxHamburgerMenu className="text-2xl" />
+            <RxHamburgerMenu onClick={handleMenuClick} className="text-2xl" />
           </div>
         </div>
       </header>
       <Outlet />
+      {isComponentVisible && isMobile && (
+        <MobileMenu onClick={handleMenuClick} />
+      )}
     </>
   );
 }

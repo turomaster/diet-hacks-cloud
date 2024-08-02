@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { NavBar } from '../components/NavBar';
 
 type Props = {
-  isMobile: boolean;
+  isMobile: boolean | null;
 };
 
 export function Home({ isMobile }: Props) {
@@ -19,7 +19,7 @@ export function Home({ isMobile }: Props) {
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [error, setError] = useState<unknown>();
 
-  function handleNavClick(name: string) {
+  function handleNavClick(name: string | null) {
     setCategoryName(name);
   }
 
