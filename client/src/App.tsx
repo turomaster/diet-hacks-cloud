@@ -92,6 +92,7 @@ export function App() {
               isComponentVisible={isComponentVisible}
               handleNavClick={handleNavClick}
               isMobile={isMobile}
+              categories={categories}
             />
           }>
           <Route
