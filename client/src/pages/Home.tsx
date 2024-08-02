@@ -1,57 +1,22 @@
 import { Card } from '../components/Card';
-import {
-  Category,
-  getCategories,
-  getPosts,
-  getPostsByCategory,
-  Posts,
-} from '../lib/data';
-import { useEffect, useState } from 'react';
+import { Category, Posts } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 
 type Props = {
   isMobile: boolean | null;
+  posts: Posts[];
+  categories: Category[];
+  handleNavClick: (name: string | null) => void;
+  error: unknown;
 };
 
-export function Home({ isMobile }: Props) {
-  const [posts, setPosts] = useState<Posts[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [categoryName, setCategoryName] = useState<string | null>(null);
-  const [error, setError] = useState<unknown>();
-
-  function handleNavClick(name: string | null) {
-    setCategoryName(name);
-  }
-
-  useEffect(() => {
-    async function loadCategories() {
-      try {
-        const data = await getCategories();
-        setCategories(data);
-      } catch (error) {
-        setError(error);
-      }
-    }
-    loadCategories();
-  }, []);
-
-  useEffect(() => {
-    async function loadPosts() {
-      try {
-        if (categoryName) {
-          const data = await getPostsByCategory(categoryName);
-          setPosts(data);
-        } else {
-          const data = await getPosts();
-          setPosts(data);
-        }
-      } catch (error) {
-        setError(error);
-      }
-    }
-    loadPosts();
-  }, [categoryName]);
-
+export function Home({
+  isMobile,
+  posts,
+  categories,
+  handleNavClick,
+  error,
+}: Props) {
   if (error || !posts) {
     return (
       <div>
