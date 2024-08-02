@@ -23,13 +23,10 @@ export function App() {
 
   return (
     <>
-      <Header isMobile={isMobile} />
       <Routes>
-        <Route path="/" element={<Home isMobile={isMobile} />} />
-        <Route
-          path="/categories/:categoryName"
-          element={<Home isMobile={isMobile} />}
-        />
+        <Route path="/" element={<Header isMobile={isMobile} />}>
+          <Route index element={<Home isMobile={isMobile} />} />
+        </Route>
       </Routes>
     </>
   );

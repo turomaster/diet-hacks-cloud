@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { Card } from '../components/Card';
 import {
   Category,
@@ -17,9 +16,12 @@ type Props = {
 export function Home({ isMobile }: Props) {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryName, setCategoryName] = useState<string | null>(null);
   const [error, setError] = useState<unknown>();
 
-  const { categoryName } = useParams();
+  function handleNavClick(name: string) {
+    setCategoryName(name);
+  }
 
   useEffect(() => {
     async function loadCategories() {
@@ -61,7 +63,9 @@ export function Home({ isMobile }: Props) {
   return (
     <div className="flex h-full">
       <div className="flex">
-        {!isMobile && <NavBar categories={categories} />}
+        {!isMobile && (
+          <NavBar onClick={handleNavClick} categories={categories} />
+        )}
       </div>
       <div className="basis-full px-8">
         {posts.map((post, index) => (

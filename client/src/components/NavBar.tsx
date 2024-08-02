@@ -3,27 +3,33 @@ import { Category } from '../lib/data';
 
 type Props = {
   categories: Category[];
+  onClick: (name: string | null) => void;
 };
 
-export function NavBar({ categories }: Props) {
+export function NavBar({ categories, onClick }: Props) {
   return (
     <div className="bg-accent-gray shadow-md w-56">
       <nav>
         <ul className="flex flex-col text-center">
           <li className="mb-2 font-bold">Explore</li>
           <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-            <Link to="/">Home</Link>
+            <Link to="/" onClick={() => onClick(null)}>
+              Home
+            </Link>
           </li>
           <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-            <Link to="/categories/trending">Trending</Link>
+            <Link to="/" onClick={() => onClick('trending')}>
+              Trending
+            </Link>
           </li>
           <hr className="my-6 mx-auto w-40 border-black border-opacity-20" />
           <li className="mb-2 font-bold">Categories</li>
           {categories.map((category) => (
             <li
               key={category.id}
+              onClick={() => onClick(category.name)}
               className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to={`/categories/${category.name}`}>{category.name}</Link>
+              <Link>{category.name}</Link>
             </li>
           ))}
         </ul>
