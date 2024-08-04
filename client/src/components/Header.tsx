@@ -53,38 +53,40 @@ export function Header({
         </div>
       </header>
       <Outlet />
-      <DesktopMenu
-        position={menu.current}
-        isComponentVisible={isComponentVisible}>
-        <nav>
-          <ul className="flex flex-col items-center">
-            <li className="flex justify-center rounded-lg bg-accent-gray hover:bg-white mt-2 w-56">
-              <Link to="#" onClick={() => handleNavClick(null)}>
-                Home
-              </Link>
-            </li>
-            <li className="flex flex-col justify-center items-center rounded-lg mx-4 bg-accent-gray mt-2 w-56">
-              <span>Categories</span>
-              <IoMdArrowDropdown onClick={handleClick} className="text-xl" />
-              <ul className="flex flex-col items-center">
-                {open &&
-                  categories.map((category) => (
-                    <li key={category.id}>
-                      <Link
-                        to="#"
-                        onClick={() => handleNavClick(category.name)}>
-                        {category.name}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </li>
-            <li className="flex justify-center rounded-lg bg-accent-gray hover:bg-white mt-2 mb-2 w-56">
-              <Link to="#">Sign In</Link>
-            </li>
-          </ul>
-        </nav>
-      </DesktopMenu>
+      {!isMobile && (
+        <DesktopMenu
+          position={menu.current}
+          isComponentVisible={isComponentVisible}>
+          <nav>
+            <ul className="flex flex-col items-center">
+              <li className="flex justify-center rounded-lg bg-accent-gray hover:bg-white mt-2 w-56">
+                <Link to="#" onClick={() => handleNavClick(null)}>
+                  Home
+                </Link>
+              </li>
+              <li className="flex flex-col justify-center items-center rounded-lg mx-4 bg-accent-gray mt-2 w-56">
+                <span>Categories</span>
+                <IoMdArrowDropdown onClick={handleClick} className="text-xl" />
+                <ul className="flex flex-col items-center">
+                  {open &&
+                    categories.map((category) => (
+                      <li key={category.id}>
+                        <Link
+                          to="#"
+                          onClick={() => handleNavClick(category.name)}>
+                          {category.name}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </li>
+              <li className="flex justify-center rounded-lg bg-accent-gray hover:bg-white mt-2 mb-2 w-56">
+                <Link to="#">Sign In</Link>
+              </li>
+            </ul>
+          </nav>
+        </DesktopMenu>
+      )}
       {isComponentVisible && isMobile && (
         <MobileMenu handleNavClick={handleNavClick} />
       )}
