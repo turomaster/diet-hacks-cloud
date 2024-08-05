@@ -15,15 +15,16 @@ values ('markm', 'hello@gmail.com', 'password123', 'user', now());
 
 INSERT INTO "categories" ("name") VALUES ('Breakfast');
 INSERT INTO "categories" ("name") VALUES ('Dinner');
+INSERT INTO "categories" ("name") VALUES ('Dessert');
 INSERT INTO "categories" ("name") VALUES ('Snacks');
 INSERT INTO "categories" ("name") VALUES ('Fast Food');
 INSERT INTO "categories" ("name") VALUES ('Ingredient Swaps');
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "totalVotes", "views", "createdAt")
-VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 1, 12, 24, now());
+VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 1, 36, 24, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "totalVotes", "views", "createdAt")
-VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 1, 12, 24, now());
+VALUES ('Jersey Mike''s Turkey Provolone Tub', 550, 'Order Mike''s Way, no olive oil or mayo. Red wine vinegar is ok.', 1, 2, 12, 24, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "totalVotes", "views", "createdAt")
-VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 1, 12, 24, now());
+VALUES ('Sugar Free Cheesecake Pudding', 400, 'Sugar free jello cheesecake pudding. 1 cup Fairlife 0% fat milk, 2/3 cup nonfat Greek yogurt. Sugar free Reddi-wip.', 1, 3, 48, 24, now());

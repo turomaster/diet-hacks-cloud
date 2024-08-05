@@ -178,12 +178,47 @@ app.post('/api/comments/:postId', async (req, res, next) => {
 app.get('/api/categories', async (req, res, next) => {
   try {
     const sql = `
-      select "name"
+      select *
         from "categories"
     `;
     const result = await db.query<Category>(sql);
-    const categories = result.rows;
-    res.json(categories);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/categories/:categoryName', async (req, res, next) => {
+  try {
+    const { categoryName } = req.params;
+    if (!(typeof categoryName === 'string'))
+      throw new ClientError(
+        400,
+        `categoryName: ${categoryName} must be a string`
+      );
+    const sql = `
+      select *
+        from "posts"
+        join "categories" on "posts"."categoryId" = "categories"."id"
+        where "categories"."name" = $1
+    `;
+    const params = [categoryName];
+    const result = await db.query<Category>(sql, params);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/categories/trending', async (req, res, next) => {
+  try {
+    const sql = `
+      select *
+        from "posts"
+        order by "posts"."totalVotes" desc;
+    `;
+    const result = await db.query<Post[]>(sql);
+    res.json(result.rows);
   } catch (err) {
     next(err);
   }
