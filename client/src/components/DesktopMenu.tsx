@@ -20,7 +20,7 @@ export function DesktopMenu({ isComponentVisible, position, children }: Props) {
     <>
       <div
         style={{ position: 'absolute', top: `${top}px`, right: `${right}px` }}
-        className="w-72 bg-gray-200 rounded-lg">
+        className="w-72 ">
         {children}
       </div>
     </>,

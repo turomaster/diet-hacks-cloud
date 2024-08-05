@@ -58,19 +58,21 @@ export function Header({
           position={menu.current}
           isComponentVisible={isComponentVisible}>
           <nav>
-            <ul className="flex flex-col items-center">
-              <li className="flex justify-center rounded-lg bg-accent-gray hover:bg-white mt-2 w-56">
+            <ul className="flex flex-col items-center bg-accent-gray border-2 rounded-lg">
+              <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 w-56">
                 <Link to="#" onClick={() => handleNavClick(null)}>
                   Home
                 </Link>
               </li>
-              <li className="flex flex-col justify-center items-center rounded-lg mx-4 bg-accent-gray mt-2 w-56">
+              <li className="flex flex-col justify-center items-center rounded-lg mx-4  mt-2 w-56">
                 <span>Categories</span>
                 <IoMdArrowDropdown onClick={handleClick} className="text-xl" />
                 <ul className="flex flex-col items-center">
                   {open &&
                     categories.map((category) => (
-                      <li key={category.id}>
+                      <li
+                        key={category.id}
+                        className="hover:bg-gray-200 text-center rounded-lg w-56">
                         <Link
                           to="#"
                           onClick={() => handleNavClick(category.name)}>
@@ -80,7 +82,7 @@ export function Header({
                     ))}
                 </ul>
               </li>
-              <li className="flex justify-center rounded-lg bg-accent-gray hover:bg-white mt-2 mb-2 w-56">
+              <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
                 <Link to="#">Sign In</Link>
               </li>
             </ul>
