@@ -21,6 +21,7 @@ export function Details({
 }: Props) {
   const [error, setError] = useState<unknown>();
   const [comments, setComments] = useState<Comments[]>([]);
+  const [replyToUser, setReplyToUser] = useState<string>();
   const { postId } = useParams();
 
   useEffect(() => {
@@ -36,6 +37,10 @@ export function Details({
     }
     loadComments();
   }, [postId]);
+
+  function handleClick(username: string) {
+    setReplyToUser(username);
+  }
 
   if (error) {
     return (
@@ -67,11 +72,12 @@ export function Details({
               rows={2}
               className="w-full text-sm pt-2 pl-2 border-0 focus:ring-0 focus:outline-none dark:placeholder-gray-400"
               placeholder="Write a comment..."
+              defaultValue={replyToUser && `@${replyToUser}`}
               required></textarea>
           </div>
           <button
             type="submit"
-            className="items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-400 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+            className="items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-400 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-green-600">
             Post comment
           </button>
         </form>
@@ -81,11 +87,13 @@ export function Details({
               <div key={comment.id}>
                 <span>@{comment.username}</span>
                 <li>{comment.content}</li>
-                <div className="flex items-center">
+                <div className="flex items-center mb-2">
                   <SlLike className="mr-2" />
                   <div className="flex min-w-6">12</div>
                   <SlDislike className="mr-2" />
-                  Reply
+                  <button onClick={() => handleClick(comment.username)}>
+                    Reply
+                  </button>
                 </div>
               </div>
             ))}
