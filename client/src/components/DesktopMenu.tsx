@@ -2,19 +2,23 @@ import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 type Props = {
-  isComponentVisible: boolean;
+  isMobileMenuVisible: boolean;
   position: HTMLDivElement | null;
   children: ReactNode;
 };
 
-export function DesktopMenu({ isComponentVisible, position, children }: Props) {
-  if (!isComponentVisible || !position) return null;
+export function DesktopMenu({
+  isMobileMenuVisible,
+  position,
+  children,
+}: Props) {
+  if (!isMobileMenuVisible || !position) return null;
 
   const r = position.getBoundingClientRect();
   const top = r.top + 40;
   const right = 20;
 
-  if (!isComponentVisible) return null;
+  if (!isMobileMenuVisible) return null;
 
   return createPortal(
     <>

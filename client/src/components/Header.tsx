@@ -11,7 +11,7 @@ type Props = {
   isMobile: boolean | null;
   handleNavClick: (name: string | null) => void;
   handleMenuClick: () => void;
-  isComponentVisible: boolean;
+  isMobileMenuVisible: boolean;
   categories: Category[];
 };
 
@@ -19,7 +19,7 @@ export function Header({
   isMobile,
   handleNavClick,
   handleMenuClick,
-  isComponentVisible,
+  isMobileMenuVisible,
   categories,
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
@@ -56,7 +56,7 @@ export function Header({
       {!isMobile && (
         <DesktopMenu
           position={menu.current}
-          isComponentVisible={isComponentVisible}>
+          isMobileMenuVisible={isMobileMenuVisible}>
           <nav>
             <ul className="flex flex-col items-center bg-accent-gray border-2 rounded-lg">
               <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 w-56">
@@ -89,7 +89,7 @@ export function Header({
           </nav>
         </DesktopMenu>
       )}
-      {isComponentVisible && isMobile && (
+      {isMobileMenuVisible && isMobile && (
         <MobileMenu handleNavClick={handleNavClick} />
       )}
     </>

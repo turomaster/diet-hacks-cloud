@@ -16,7 +16,7 @@ export function App() {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [isComponentVisible, setIsComponentVisible] = useState(false);
+  const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
@@ -70,14 +70,14 @@ export function App() {
 
   function handleNavClick(name: string | null) {
     setCategoryName(name);
-    setIsComponentVisible(false);
+    setIsMobileMenuVisible(false);
   }
 
   function handleMenuClick() {
-    if (!isComponentVisible) {
-      setIsComponentVisible(true);
+    if (!isMobileMenuVisible) {
+      setIsMobileMenuVisible(true);
     } else {
-      setIsComponentVisible(false);
+      setIsMobileMenuVisible(false);
     }
   }
 
@@ -89,7 +89,7 @@ export function App() {
           element={
             <Header
               handleMenuClick={handleMenuClick}
-              isComponentVisible={isComponentVisible}
+              isMobileMenuVisible={isMobileMenuVisible}
               handleNavClick={handleNavClick}
               isMobile={isMobile}
               categories={categories}
