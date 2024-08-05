@@ -3,10 +3,15 @@ import { IoShareOutline } from 'react-icons/io5';
 import { PiArrowFatUp } from 'react-icons/pi';
 import { PiArrowFatDown } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
+import { Posts } from '../lib/data';
 
-export function Card({ post }) {
+type Props = {
+  post: Posts;
+};
+
+export function Card({ post }: Props) {
   return (
-    <Link to={'/'}>
+    <Link to={`/post/${post.id}`}>
       <div className="card flex flex-col shadow-md p-4 my-4">
         <div className="card-title font-bold">{post.title}</div>
         <div className="card-calories text-gray-400 py-2 min-h-10">

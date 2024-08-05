@@ -10,6 +10,7 @@ import {
   getPostsByCategory,
   Posts,
 } from './lib/data';
+import { Details } from './pages/Details';
 
 export function App() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
@@ -78,6 +79,14 @@ export function App() {
     }
   }
 
+  if (error) {
+    return (
+      <div>
+        Error! {error instanceof Error ? error.message : 'Unknown error'}
+      </div>
+    );
+  }
+
   return (
     <>
       <Routes>
@@ -101,6 +110,17 @@ export function App() {
                 posts={posts}
                 isMobile={isMobile}
                 error={error}
+              />
+            }
+          />
+          <Route
+            path={`/post/:postId`}
+            element={
+              <Details
+                posts={posts}
+                isMobile={isMobile}
+                categories={categories}
+                handleNavClick={handleNavClick}
               />
             }
           />
