@@ -22,13 +22,10 @@ export function App() {
   useEffect(() => {
     async function loadPosts() {
       try {
-        if (categoryName) {
-          const data = await getPostsByCategory(categoryName);
-          setPosts(data);
-        } else {
-          const data = await getPosts();
-          setPosts(data);
-        }
+        const data = categoryName
+          ? await getPostsByCategory(categoryName)
+          : await getPosts();
+        setPosts(data);
       } catch (error) {
         setError(error);
       }
