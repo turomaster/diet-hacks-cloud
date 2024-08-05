@@ -78,7 +78,7 @@ export function Details({
         <div className="shadow-md pl-2 py-2">
           <ul>
             {comments.map((comment) => (
-              <>
+              <div key={comment.id}>
                 <span>@{comment.username}</span>
                 <li>{comment.content}</li>
                 <div className="flex items-center">
@@ -87,7 +87,7 @@ export function Details({
                   <SlDislike className="mr-2" />
                   Reply
                 </div>
-              </>
+              </div>
             ))}
           </ul>
         </div>

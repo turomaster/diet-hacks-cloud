@@ -2,7 +2,7 @@ import { Header } from './components/Header';
 import { useEffect, useState } from 'react';
 import './App.css';
 import { Home } from './pages/Home';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import {
   Category,
   getCategories,
@@ -19,6 +19,7 @@ export function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadPosts() {
@@ -66,8 +67,19 @@ export function App() {
     };
   }, []);
 
-  function handleNavClick(name: string | null) {
-    setCategoryName(name);
+  async function handleNavClick(name: string | null) {
+    navigate('/');
+    if (name === 'trending') {
+      try {
+        const data = await getPosts();
+        const postsTrending = data.sort((a, b) => b.views - a.views);
+        setPosts(postsTrending);
+      } catch (error) {
+        setError(error);
+      }
+    } else {
+      setCategoryName(name);
+    }
     setIsMobileMenuVisible(false);
   }
 
