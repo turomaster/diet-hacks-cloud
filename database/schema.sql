@@ -10,7 +10,7 @@ CREATE TABLE "users" (
   "id" serial PRIMARY KEY,
   "username" text UNIQUE,
   "email" text UNIQUE,
-  "password" text,
+  "hashedPassword" text,
   "role" text,
   "createdAt" timestamp NOT NULL DEFAULT (now())
 );

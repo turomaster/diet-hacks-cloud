@@ -3,22 +3,22 @@ import { Category } from '../lib/data';
 
 type Props = {
   categories: Category[];
-  onClick: (name: string | null) => void;
+  handleNavClick: (name: string | null) => void;
 };
 
-export function NavBar({ categories, onClick }: Props) {
+export function NavBar({ categories, handleNavClick }: Props) {
   return (
     <div className="bg-accent-gray shadow-md w-56">
       <nav>
         <ul className="flex flex-col text-center">
           <li className="mb-2 font-bold">Explore</li>
           <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-            <Link to="/" onClick={() => onClick(null)}>
+            <Link to="/" onClick={() => handleNavClick(null)}>
               Home
             </Link>
           </li>
           <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-            <Link to="/" onClick={() => onClick('trending')}>
+            <Link to="/" onClick={() => handleNavClick('trending')}>
               Trending
             </Link>
           </li>
@@ -27,7 +27,7 @@ export function NavBar({ categories, onClick }: Props) {
           {categories.map((category) => (
             <li
               key={category.id}
-              onClick={() => onClick(category.name)}
+              onClick={() => handleNavClick(category.name)}
               className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
               <Link to="#">{category.name}</Link>
             </li>

@@ -10,13 +10,13 @@
 --      ('Build projects', false),
 --      ('Get a job', false);
 
-insert into "users" ("username", "email", "password", "role", "createdAt")
+insert into "users" ("username", "email", "hashedPassword", "role", "createdAt")
 values ('markm', 'markm@gmail.com', 'password123', 'user', now());
 
-insert into "users" ("username", "email", "password", "role", "createdAt")
+insert into "users" ("username", "email", "hashedPassword", "role", "createdAt")
 values ('dirtbiker78', 'dirtbiker78@gmail.com', 'password123', 'user', now());
 
-insert into "users" ("username", "email", "password", "role", "createdAt")
+insert into "users" ("username", "email", "hashedPassword", "role", "createdAt")
 values ('musicfan98', 'musicfan98@gmail.com', 'password123', 'user', now());
 
 INSERT INTO "categories" ("name") VALUES ('Breakfast');
