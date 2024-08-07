@@ -11,9 +11,8 @@ type AuthData = {
  * Form that signs in a user.
  */
 export function SignInForm() {
-  const { handleSignIn } = useUser();
+  const { handleSignIn, user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,8 +38,6 @@ export function SignInForm() {
       }
       const { user, token } = (await res.json()) as AuthData;
       handleSignIn(user, token);
-      console.log('Signed In', user);
-      console.log('Received token:', token);
       navigate('/');
     } catch (err) {
       alert(`Error signing in: ${err}`);
