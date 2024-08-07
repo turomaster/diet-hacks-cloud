@@ -3,7 +3,7 @@ import { SignInForm } from '../components/SignInForm';
 
 type Props = {
   mode: 'sign-up' | 'sign-in';
-  isMobile: boolean;
+  isMobile: boolean | null;
 };
 export function AuthPage({ mode, isMobile }: Props) {
   return (
