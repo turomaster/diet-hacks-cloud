@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- Remove when used */
 import 'dotenv/config';
-import express from 'express';
+import express, { application } from 'express';
 import pg, { DatabaseError } from 'pg';
 import { ClientError, errorMiddleware } from './lib/index.js';
 import { Category, Comment, Post } from './lib/data.js';
@@ -43,9 +43,7 @@ app.get('/api/posts/:id', async (req, res, next) => {
     if (!Number.isInteger(+id))
       throw new ClientError(400, `id: ${id} must be a number.`);
     const sql = `
-      select "title",
-             "calories",
-             "body"
+      select *
         from "posts"
         where "id" = $1;
     `;
@@ -132,8 +130,7 @@ app.get('/api/comments/:postId', async (req, res, next) => {
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
     const sql = `
-      select "content",
-             "userId"
+      select *
         from "comments"
         where "postId" = $1;
     `;

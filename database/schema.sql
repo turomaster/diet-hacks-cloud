@@ -35,7 +35,7 @@ CREATE TABLE "categories" (
 CREATE TABLE "comments" (
   "id" serial PRIMARY KEY,
   "postId" integer,
-  "userId" integer,
+  "username" text,
   "content" text,
   "createdAt" timestamp NOT NULL DEFAULT (now())
 );
@@ -66,7 +66,7 @@ ALTER TABLE "posts" ADD FOREIGN KEY ("categoryId") REFERENCES "categories" ("id"
 
 ALTER TABLE "comments" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "comments" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+ALTER TABLE "comments" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
 ALTER TABLE "commentVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
