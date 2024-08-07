@@ -21,3 +21,10 @@ export type Category = {
   id: number;
   name: string;
 };
+
+export type User = {
+  id: number;
+  username: string;
+};
+
+export type UserPost = Post & User;

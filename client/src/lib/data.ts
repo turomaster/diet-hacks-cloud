@@ -1,5 +1,3 @@
-import { User } from '../components/UserContext';
-
 export type Posts = {
   id: number;
   title: string;
@@ -23,6 +21,13 @@ export type Comments = {
   username: string;
   content: string;
 };
+
+export type User = {
+  id: number;
+  username: string;
+};
+
+export type UserPost = Posts & User;
 
 const authKey = 'um.auth';
 
@@ -52,14 +57,14 @@ export function readToken(): string | undefined {
   return (JSON.parse(auth) as Auth).token;
 }
 
-export async function getPosts(): Promise<Posts[]> {
+export async function getPosts(): Promise<UserPost[]> {
   const response = await fetch('/api/posts', {
     headers: {
       'Content-Type': 'application/json',
     },
   });
   if (!response.ok) throw new Error(`Response status: ${response.status}`);
-  return (await response.json()) as Posts[];
+  return (await response.json()) as UserPost[];
 }
 
 export async function getCategories(): Promise<Category[]> {

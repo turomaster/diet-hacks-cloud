@@ -3,10 +3,10 @@ import { IoShareOutline } from 'react-icons/io5';
 import { PiArrowFatUp } from 'react-icons/pi';
 import { PiArrowFatDown } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
-import { Posts } from '../lib/data';
+import { UserPost } from '../lib/data';
 
 type Props = {
-  post: Posts;
+  post: UserPost;
 };
 
 export function Card({ post }: Props) {
@@ -18,7 +18,7 @@ export function Card({ post }: Props) {
           {post.calories ? post.calories + ' Calories' : ''}
         </div>
         <div className="card-body text-sm">{post.body}</div>
-        <div className="card-footer flex mt-4">
+        <div className="card-footer flex flex-wrap mt-4">
           <div className="basis-1/2">
             <div className="vote-actions flex items-center">
               <PiArrowFatUp className="text-2xl" />
@@ -33,6 +33,9 @@ export function Card({ post }: Props) {
               <MdFavoriteBorder className="text-2xl mx-2" />
               <IoShareOutline className="text-2xl" />
             </div>
+          </div>
+          <div className="basis-full pt-2">
+            <p>@{post.username}</p>
           </div>
         </div>
       </div>

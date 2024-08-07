@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { Card } from '../components/Card';
-import { Category, Comments, getComments, Posts } from '../lib/data';
+import { Category, Comments, getComments, UserPost } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 import { SlLike } from 'react-icons/sl';
 import { SlDislike } from 'react-icons/sl';
 import { useEffect, useState } from 'react';
 
 type Props = {
-  posts: Posts[];
+  posts: UserPost[] | Posts[];
   isMobile: boolean | null;
   categories: Category[];
   handleNavClick: (name: string | null) => void;
@@ -54,7 +54,7 @@ export function Details({
     <div className="flex h-full">
       <div className="flex">
         {!isMobile && (
-          <NavBar onClick={handleNavClick} categories={categories} />
+          <NavBar handleNavClick={handleNavClick} categories={categories} />
         )}
       </div>
       <div className="basis-full px-8">

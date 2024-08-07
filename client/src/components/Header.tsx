@@ -92,25 +92,34 @@ export function Header({
                     ))}
                 </ul>
               </li>
-              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                {user && (
-                  <Link to="/" onClick={handleSignInOrOut}>
-                    Sign Out
+              {user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                  <Link to="/create-post" onClick={handleMenuClick}>
+                    Make a Post
                   </Link>
-                )}
-                {!user && (
+                </li>
+              )}
+              {!user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
                   <Link to="/sign-in" onClick={handleSignInOrOut}>
                     Sign In
                   </Link>
-                )}
-              </li>
-              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                {!user && (
+                </li>
+              )}
+              {!user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
                   <Link to="/sign-up" onClick={handleSignInOrOut}>
                     Register
                   </Link>
-                )}
-              </li>
+                </li>
+              )}
+              {user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                  <Link to="/" onClick={handleSignInOrOut}>
+                    Sign Out
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </DesktopMenu>
@@ -119,6 +128,7 @@ export function Header({
         <MobileMenu
           handleSignInOrOut={handleSignInOrOut}
           handleNavClick={handleNavClick}
+          handleMenuClick={handleMenuClick}
         />
       )}
     </>

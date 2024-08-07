@@ -5,7 +5,7 @@ import pg, { DatabaseError } from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { authMiddleware, ClientError, errorMiddleware } from './lib/index.js';
-import { Category, Comment, Post } from './lib/data.js';
+import { Category, Comment, Post, UserPost } from './lib/data.js';
 
 type User = {
   userId: number;
@@ -98,11 +98,21 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
 app.get('/api/posts', async (req, res, next) => {
   try {
     const sql = `
-      select *
-        from "posts";
+      select "body",
+             "calories",
+             "categoryId",
+             "id",
+             "role",
+             "title",
+             "totalVotes",
+             "userId",
+             "username",
+             "views"
+        from "posts"
+        join "users" using ("id")
     `;
 
-    const result = await db.query<Post[]>(sql);
+    const result = await db.query<UserPost[]>(sql);
     res.json(result.rows);
   } catch (err) {
     next(err);
@@ -129,21 +139,40 @@ app.get('/api/posts/:id', async (req, res, next) => {
   }
 });
 
-app.post('/api/posts', async (req, res, next) => {
+app.get('/api/users/:userId', async (req, res, next) => {
   try {
-    const { title, calories, body, userId, categoryId } = req.body;
-    if (!title || !calories || !body || !userId || !categoryId) {
-      throw new ClientError(
-        400,
-        'title, calories, body, userId, and categoryId is required.'
-      );
+    const { userId } = req.params;
+    if (!Number.isInteger(+userId))
+      throw new ClientError(400, `userId: ${userId} must be a number.`);
+    const sql = `
+      select *
+        from "posts"
+        join "users" on "posts"."userId" = "users"."id"
+        where "users."id" = $1;
+    `;
+    const params = [userId];
+    const result = await db.query<Post[]>(sql, params);
+    if (!result.rows[0])
+      throw new ClientError(404, `post with userId: ${userId} does not exist.`);
+    res.json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/posts', authMiddleware, async (req, res, next) => {
+  try {
+    const { title, categoryId, calories, body } = req.body;
+    if (!title || !body || !categoryId) {
+      throw new ClientError(400, 'title, body and categoryId is required.');
     }
     const sql = `
-      insert into "posts" ("title", "calories", "body", "userId", "categoryId")
-        values ($1, $2, $3, $4, $5)
+      insert into "posts" ("title", "categoryId", "calories", "body")
+        values ($1, $2, $3, $4)
         returning *;
     `;
-    const params = [title, calories, body, userId, categoryId];
+    const caloriesValue = calories || null;
+    const params = [title, categoryId, caloriesValue, body];
     const result = await db.query<Post>(sql, params);
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -268,11 +297,12 @@ app.get('/api/categories/:categoryName', async (req, res, next) => {
     const sql = `
       select *
         from "posts"
-        join "categories" on "posts"."categoryId" = "categories"."id"
-        where "categories"."name" = $1
+        join "categories" using ("id")
+        join "users" using ("id")
+        where "categories"."name" = $1;
     `;
     const params = [categoryName];
-    const result = await db.query<Category>(sql, params);
+    const result = await db.query<Post[]>(sql, params);
     res.json(result.rows);
   } catch (err) {
     next(err);

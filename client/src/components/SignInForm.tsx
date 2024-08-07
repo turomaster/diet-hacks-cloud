@@ -1,6 +1,6 @@
 import { type FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from './useUser';
+import { User, useUser } from './useUser';
 
 type AuthData = {
   user: User;
@@ -39,8 +39,6 @@ export function SignInForm() {
       }
       const { user, token } = (await res.json()) as AuthData;
       handleSignIn(user, token);
-      console.log('Signed In', user);
-      console.log('Received token:', token);
       navigate('/');
     } catch (err) {
       alert(`Error signing in: ${err}`);

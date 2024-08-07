@@ -7,9 +7,14 @@ import { useUser } from './useUser';
 type Props = {
   handleSignInOrOut: () => void;
   handleNavClick: (name: string | null) => void;
+  handleMenuClick: () => void;
 };
 
-export function MobileMenu({ handleSignInOrOut, handleNavClick }: Props) {
+export function MobileMenu({
+  handleSignInOrOut,
+  handleNavClick,
+  handleMenuClick,
+}: Props) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<unknown>();
@@ -66,18 +71,34 @@ export function MobileMenu({ handleSignInOrOut, handleNavClick }: Props) {
                 ))}
             </ul>
           </li>
-          <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-            {user && (
-              <Link to="/" onClick={handleSignInOrOut}>
-                Sign Out
-              </Link>
-            )}
-            {!user && (
+          {!user && (
+            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
               <Link to="/sign-in" onClick={handleSignInOrOut}>
                 Sign In
               </Link>
-            )}
-          </li>
+            </li>
+          )}
+          {user && (
+            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+              <Link to="/create-post" onClick={handleMenuClick}>
+                Make a Post
+              </Link>
+            </li>
+          )}
+          {!user && (
+            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+              <Link to="/sign-up" onClick={handleSignInOrOut}>
+                Register
+              </Link>
+            </li>
+          )}
+          {user && (
+            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+              <Link to="/" onClick={handleSignInOrOut}>
+                Sign Out
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

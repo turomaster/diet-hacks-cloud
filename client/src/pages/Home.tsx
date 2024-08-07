@@ -1,10 +1,10 @@
 import { Card } from '../components/Card';
-import { Category, Posts } from '../lib/data';
+import { Category, UserPost } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 
 type Props = {
   isMobile: boolean | null;
-  posts: Posts[];
+  posts: UserPost[] | Posts[];
   categories: Category[];
   handleNavClick: (name: string | null) => void;
   error: unknown;
@@ -33,8 +33,8 @@ export function Home({
         )}
       </div>
       <div className="basis-full px-8">
-        {posts.map((post, index) => (
-          <Card key={post.title + index} post={post} />
+        {posts.map((post) => (
+          <Card key={post.id} post={post} />
         ))}
         {!posts.length && (
           <div className="flex justify-center mt-2">

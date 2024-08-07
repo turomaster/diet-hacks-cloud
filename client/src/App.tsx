@@ -9,14 +9,16 @@ import {
   getPosts,
   getPostsByCategory,
   Posts,
+  UserPost,
 } from './lib/data';
 import { Details } from './pages/Details';
 import { AuthPage } from './pages/AuthPage';
 import { UserProvider } from './components/UserContext';
+import { CreatePost } from './pages/CreatePost';
 
 export function App() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
-  const [posts, setPosts] = useState<Posts[]>([]);
+  const [posts, setPosts] = useState<UserPost[] | Posts[]>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -141,6 +143,10 @@ export function App() {
           <Route
             path="/sign-up"
             element={<AuthPage isMobile={isMobile} mode="sign-up" />}
+          />
+          <Route
+            path="/create-post"
+            element={<CreatePost isMobile={isMobile} categories={categories} />}
           />
         </Route>
       </Routes>
