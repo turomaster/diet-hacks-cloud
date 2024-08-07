@@ -1,17 +1,18 @@
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { IoLogoDocker } from 'react-icons/io5';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { MobileMenu } from './MobileMenu';
 import { DesktopMenu } from './DesktopMenu';
 import { useRef, useState } from 'react';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { Category } from '../lib/data';
+import { useUser } from './useUser';
 
 type Props = {
   isMobile: boolean | null;
   handleNavClick: (name: string | null) => void;
   handleMenuClick: () => void;
-  isMobileMenuVisible: boolean;
+  isMenuVisible: boolean;
   categories: Category[];
 };
 
@@ -19,10 +20,13 @@ export function Header({
   isMobile,
   handleNavClick,
   handleMenuClick,
-  isMobileMenuVisible,
+  isMenuVisible,
   categories,
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
+  const { user, handleSignOut } = useUser();
+  const menu = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   function handleClick() {
     if (open) {
@@ -32,7 +36,15 @@ export function Header({
     }
   }
 
-  const menu = useRef<HTMLDivElement>(null);
+  function handleSignInOrOut() {
+    if (user) {
+      handleSignOut();
+      handleNavClick(null); // Closes menu by setting menuIsVisible to false
+    } else {
+      handleNavClick(null);
+      navigate('/sign-in');
+    }
+  }
 
   return (
     <>
@@ -54,13 +66,11 @@ export function Header({
       </header>
       <Outlet />
       {!isMobile && (
-        <DesktopMenu
-          position={menu.current}
-          isMobileMenuVisible={isMobileMenuVisible}>
+        <DesktopMenu position={menu.current} isMenuVisible={isMenuVisible}>
           <nav>
             <ul className="flex flex-col items-center bg-accent-gray border-2 rounded-lg">
               <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 w-56">
-                <Link to="#" onClick={() => handleNavClick(null)}>
+                <Link to="/" onClick={() => handleNavClick(null)}>
                   Home
                 </Link>
               </li>
@@ -74,7 +84,7 @@ export function Header({
                         key={category.id}
                         className="hover:bg-gray-200 text-center rounded-lg w-56">
                         <Link
-                          to="#"
+                          to="/"
                           onClick={() => handleNavClick(category.name)}>
                           {category.name}
                         </Link>
@@ -82,15 +92,34 @@ export function Header({
                     ))}
                 </ul>
               </li>
-              <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                <Link to="#">Sign In</Link>
+              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                {user && (
+                  <Link to="/" onClick={handleSignInOrOut}>
+                    Sign Out
+                  </Link>
+                )}
+                {!user && (
+                  <Link to="/sign-in" onClick={handleSignInOrOut}>
+                    Sign In
+                  </Link>
+                )}
+              </li>
+              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                {!user && (
+                  <Link to="/sign-up" onClick={handleSignInOrOut}>
+                    Register
+                  </Link>
+                )}
               </li>
             </ul>
           </nav>
         </DesktopMenu>
       )}
-      {isMobileMenuVisible && isMobile && (
-        <MobileMenu handleNavClick={handleNavClick} />
+      {isMenuVisible && isMobile && (
+        <MobileMenu
+          handleSignInOrOut={handleSignInOrOut}
+          handleNavClick={handleNavClick}
+        />
       )}
     </>
   );

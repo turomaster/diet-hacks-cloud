@@ -11,13 +11,15 @@ import {
   Posts,
 } from './lib/data';
 import { Details } from './pages/Details';
+import { AuthPage } from './pages/AuthPage';
+import { UserProvider } from './components/UserContext';
 
 export function App() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const [posts, setPosts] = useState<Posts[]>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
   const navigate = useNavigate();
 
@@ -68,7 +70,7 @@ export function App() {
   }, []);
 
   async function handleNavClick(name: string | null) {
-    navigate('/');
+    setIsMenuVisible(false);
     if (name === 'trending') {
       try {
         const data = await getPosts();
@@ -80,15 +82,11 @@ export function App() {
     } else {
       setCategoryName(name);
     }
-    setIsMobileMenuVisible(false);
+    navigate('/');
   }
 
   function handleMenuClick() {
-    if (!isMobileMenuVisible) {
-      setIsMobileMenuVisible(true);
-    } else {
-      setIsMobileMenuVisible(false);
-    }
+    setIsMenuVisible(!isMenuVisible);
   }
 
   if (error) {
@@ -100,14 +98,14 @@ export function App() {
   }
 
   return (
-    <>
+    <UserProvider>
       <Routes>
         <Route
           path="/"
           element={
             <Header
               handleMenuClick={handleMenuClick}
-              isMobileMenuVisible={isMobileMenuVisible}
+              isMenuVisible={isMenuVisible}
               handleNavClick={handleNavClick}
               isMobile={isMobile}
               categories={categories}
@@ -136,8 +134,16 @@ export function App() {
               />
             }
           />
+          <Route
+            path="/sign-in"
+            element={<AuthPage isMobile={isMobile} mode="sign-in" />}
+          />
+          <Route
+            path="/sign-up"
+            element={<AuthPage isMobile={isMobile} mode="sign-up" />}
+          />
         </Route>
       </Routes>
-    </>
+    </UserProvider>
   );
 }

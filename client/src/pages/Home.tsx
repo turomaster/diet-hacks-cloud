@@ -29,7 +29,7 @@ export function Home({
     <div className="flex h-full">
       <div className="flex">
         {!isMobile && (
-          <NavBar onClick={handleNavClick} categories={categories} />
+          <NavBar handleNavClick={handleNavClick} categories={categories} />
         )}
       </div>
       <div className="basis-full px-8">

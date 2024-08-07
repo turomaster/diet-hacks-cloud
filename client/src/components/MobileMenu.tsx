@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Category, getCategories } from '../lib/data';
 import { IoMdArrowDropdown } from 'react-icons/io';
+import { useUser } from './useUser';
 
 type Props = {
+  handleSignInOrOut: () => void;
   handleNavClick: (name: string | null) => void;
 };
 
-export function MobileMenu({ handleNavClick }: Props) {
+export function MobileMenu({ handleSignInOrOut, handleNavClick }: Props) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<unknown>();
+  const { user } = useUser();
 
   useEffect(() => {
     async function loadCategories() {
@@ -56,7 +59,7 @@ export function MobileMenu({ handleNavClick }: Props) {
               {open &&
                 categories.map((category) => (
                   <li key={category.id}>
-                    <Link to="#" onClick={() => handleNavClick(category.name)}>
+                    <Link to="/" onClick={() => handleNavClick(category.name)}>
                       {category.name}
                     </Link>
                   </li>
@@ -64,9 +67,16 @@ export function MobileMenu({ handleNavClick }: Props) {
             </ul>
           </li>
           <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-            <Link to="/" onClick={() => handleNavClick(null)}>
-              Login
-            </Link>
+            {user && (
+              <Link to="/" onClick={handleSignInOrOut}>
+                Sign Out
+              </Link>
+            )}
+            {!user && (
+              <Link to="/sign-in" onClick={handleSignInOrOut}>
+                Sign In
+              </Link>
+            )}
           </li>
         </ul>
       </nav>
