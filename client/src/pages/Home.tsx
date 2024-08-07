@@ -27,12 +27,12 @@ export function Home({
 
   return (
     <div className="flex h-full">
-      <div className="flex">
+      <div className="fixed w-12 h-full">
         {!isMobile && (
           <NavBar handleNavClick={handleNavClick} categories={categories} />
         )}
       </div>
-      <div className="basis-full px-8">
+      <div className={isMobile ? 'basis-full px-8' : 'basis-full ml-52 px-8'}>
         {posts.map((post) => (
           <Card key={post.id} post={post} />
         ))}

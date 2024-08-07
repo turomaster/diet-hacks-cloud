@@ -19,7 +19,7 @@ export function Card({ post }: Props) {
         </div>
         <div className="card-body text-sm">{post.body}</div>
         <div className="card-footer flex flex-wrap mt-4">
-          <div className="basis-1/2">
+          <div className="flex basis-full justify-between">
             <div className="vote-actions flex items-center">
               <PiArrowFatUp className="text-2xl" />
               <div className="total-votes px-2">
@@ -27,9 +27,7 @@ export function Card({ post }: Props) {
               </div>
               <PiArrowFatDown className="text-2xl" />
             </div>
-          </div>
-          <div className="basis-1/2">
-            <div className="post-actions flex justify-end items-center">
+            <div className="post-actions flex items-center">
               <MdFavoriteBorder className="text-2xl mx-2" />
               <IoShareOutline className="text-2xl" />
             </div>

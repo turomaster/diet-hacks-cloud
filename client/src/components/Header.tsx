@@ -14,6 +14,7 @@ type Props = {
   handleMenuClick: () => void;
   isMenuVisible: boolean;
   categories: Category[];
+  isStickyHeader: boolean;
 };
 
 export function Header({
@@ -22,6 +23,7 @@ export function Header({
   handleMenuClick,
   isMenuVisible,
   categories,
+  isStickyHeader,
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const { user, handleSignOut } = useUser();
@@ -48,7 +50,10 @@ export function Header({
 
   return (
     <>
-      <header className="bg-accent-gray">
+      <header
+        className={
+          isStickyHeader ? 'sticky top-0 bg-accent-gray' : 'bg-accent-gray'
+        }>
         <div
           className={
             isMobile

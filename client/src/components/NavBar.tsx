@@ -8,7 +8,7 @@ type Props = {
 
 export function NavBar({ categories, handleNavClick }: Props) {
   return (
-    <div className="bg-accent-gray shadow-md w-56">
+    <div className="bg-accent-gray shadow-md h-full w-56">
       <nav>
         <ul className="flex flex-col text-center">
           <li className="mb-2 font-bold">Explore</li>

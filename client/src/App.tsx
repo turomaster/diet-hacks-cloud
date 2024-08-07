@@ -21,6 +21,7 @@ export function App() {
   const [posts, setPosts] = useState<UserPost[] | Posts[]>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isStickyHeader, setIsStickyHeader] = useState<boolean>(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export function App() {
       }
     }
     loadPosts();
-  }, [categoryName]);
+  }, [posts, categoryName]);
 
   useEffect(() => {
     async function loadCategories() {
@@ -68,6 +69,20 @@ export function App() {
     window.addEventListener('resize', onResize);
     return () => {
       window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    function onScroll() {
+      if (window.scrollY > 0) {
+        setIsStickyHeader(true);
+      } else {
+        setIsStickyHeader(false);
+      }
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
@@ -111,6 +126,7 @@ export function App() {
               handleNavClick={handleNavClick}
               isMobile={isMobile}
               categories={categories}
+              isStickyHeader={isStickyHeader}
             />
           }>
           <Route
