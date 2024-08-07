@@ -51,7 +51,7 @@ export function SignInForm() {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-xl font-bold mb-2">Welcome Back!</h2>
+      <h2 className="text-2xl font-bold mb-2">Welcome Back!</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex mb-1">
           <div>
@@ -75,11 +75,13 @@ export function SignInForm() {
             </label>
           </div>
         </div>
-        <button
-          disabled={isLoading}
-          className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-green-400 text-white hover:bg-green-700">
-          Sign In
-        </button>
+        <div className="flex justify-center">
+          <button
+            disabled={isLoading}
+            className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-green-400 text-white hover:bg-green-700">
+            Sign In
+          </button>
+        </div>
       </form>
     </div>
   );

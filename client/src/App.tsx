@@ -134,8 +134,14 @@ export function App() {
               />
             }
           />
-          <Route path="/sign-in" element={<AuthPage mode="sign-in" />} />
-          <Route path="/sign-up" element={<AuthPage mode="sign-up" />} />
+          <Route
+            path="/sign-in"
+            element={<AuthPage isMobile={isMobile} mode="sign-in" />}
+          />
+          <Route
+            path="/sign-up"
+            element={<AuthPage isMobile={isMobile} mode="sign-up" />}
+          />
         </Route>
       </Routes>
     </UserProvider>

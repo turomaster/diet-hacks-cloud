@@ -29,7 +29,7 @@ export function NavBar({ categories, handleNavClick }: Props) {
               key={category.id}
               onClick={() => handleNavClick(category.name)}
               className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-              <Link to="#">{category.name}</Link>
+              <Link to="/">{category.name}</Link>
             </li>
           ))}
         </ul>

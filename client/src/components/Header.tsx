@@ -92,7 +92,7 @@ export function Header({
                     ))}
                 </ul>
               </li>
-              <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
                 {user && (
                   <Link to="/" onClick={handleSignInOrOut}>
                     Sign Out
@@ -101,6 +101,13 @@ export function Header({
                 {!user && (
                   <Link to="/sign-in" onClick={handleSignInOrOut}>
                     Sign In
+                  </Link>
+                )}
+              </li>
+              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                {!user && (
+                  <Link to="/sign-up" onClick={handleSignInOrOut}>
+                    Register
                   </Link>
                 )}
               </li>

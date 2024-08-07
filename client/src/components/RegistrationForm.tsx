@@ -29,7 +29,7 @@ export function RegistrationForm() {
       console.log(
         `You can check the database with: psql -d userManagement -c 'select * from users'`
       );
-      alert(`Successfully registered ${user.username} as userId ${user.id}.`);
+      alert(`Successfully registered ${user.username}.`);
       navigate('/sign-in');
     } catch (err) {
       alert(`Error registering user: ${err}`);
@@ -39,11 +39,11 @@ export function RegistrationForm() {
   }
 
   return (
-    <div className="container">
-      <h2 className="text-xl font-bold">Register</h2>
+    <div className="flex flex-col items-center">
+      <h2 className="text-2xl font-bold">Register</h2>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-wrap mb-1">
-          <div className="w-1/2">
+        <div className="flex mb-1">
+          <div>
             <label className="mb-1 block">
               Username
               <input
@@ -64,11 +64,13 @@ export function RegistrationForm() {
             </label>
           </div>
         </div>
-        <button
-          disabled={isLoading}
-          className="align-middle text-center border rounded py-1 px-3 bg-blue-600 text-white">
-          Register
-        </button>
+        <div className="flex justify-center">
+          <button
+            disabled={isLoading}
+            className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-green-400 text-white hover:bg-green-700">
+            Register
+          </button>
+        </div>
       </form>
     </div>
   );

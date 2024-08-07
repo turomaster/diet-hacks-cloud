@@ -3,10 +3,16 @@ import { SignInForm } from '../components/SignInForm';
 
 type Props = {
   mode: 'sign-up' | 'sign-in';
+  isMobile: boolean;
 };
-export function AuthPage({ mode }: Props) {
+export function AuthPage({ mode, isMobile }: Props) {
   return (
-    <div className="container my-24 mx-4 border-2">
+    <div
+      className={
+        isMobile
+          ? 'flex justify-center rounded-md mx-10 mt-12 py-8 bg-accent-gray'
+          : 'flex justify-center rounded-md mx-72 mt-12 py-8 bg-accent-gray'
+      }>
       {mode === 'sign-up' && <RegistrationForm />}
       {mode === 'sign-in' && <SignInForm />}
     </div>
