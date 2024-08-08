@@ -20,7 +20,6 @@ export function Details({ isMobile, categories }: Props) {
   const { postId } = useParams();
   const { posts } = usePosts();
   const { user, token } = useUser();
-  console.log('comments', comments);
 
   useEffect(() => {
     async function loadComments() {
@@ -41,7 +40,6 @@ export function Details({ isMobile, categories }: Props) {
     try {
       const formData = new FormData(event.currentTarget);
       const userData = Object.fromEntries(formData);
-      console.log('userData', userData);
       const newComment = {
         ...userData,
         userId: user?.userId,
@@ -54,7 +52,6 @@ export function Details({ isMobile, categories }: Props) {
         },
         body: JSON.stringify(newComment),
       };
-      console.log('req', req);
       const res = await fetch(`/api/comments/${postId}`, req);
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
