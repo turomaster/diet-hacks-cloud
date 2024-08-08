@@ -2,7 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from 'react';
 import { readToken, readUser, removeAuth, saveAuth } from '../lib/data';
 
 export type User = {
-  id: number;
+  userId: number;
   username: string;
 };
 
@@ -12,6 +12,7 @@ export type UserContextValues = {
   handleSignIn: (user: User, token: string) => void;
   handleSignOut: () => void;
 };
+
 export const UserContext = createContext<UserContextValues>({
   user: undefined,
   token: undefined,

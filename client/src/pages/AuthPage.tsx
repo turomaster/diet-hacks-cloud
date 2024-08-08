@@ -10,11 +10,11 @@ export function AuthPage({ mode, isMobile }: Props) {
     <div
       className={
         isMobile
-          ? 'flex justify-center rounded-md mx-10 mt-12 py-8 bg-accent-gray'
-          : 'flex justify-center rounded-md mx-72 mt-12 py-8 bg-accent-gray'
+          ? 'flex justify-center rounded-md mx-10 py-8'
+          : 'flex justify-center rounded-md mx-72 py-8'
       }>
-      {mode === 'sign-up' && <RegistrationForm />}
-      {mode === 'sign-in' && <SignInForm />}
+      {mode === 'sign-up' && <RegistrationForm isMobile={isMobile} />}
+      {mode === 'sign-in' && <SignInForm isMobile={isMobile} />}
     </div>
   );
 }

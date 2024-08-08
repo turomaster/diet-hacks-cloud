@@ -1,27 +1,20 @@
-import { User } from '../components/UserContext';
-
-export type Posts = {
-  id: number;
-  title: string;
-  calories: number;
-  body: string;
-  userId: number;
-  categoryId: number;
-  totalVotes: number;
-  views: number;
-  createdAt: string;
-};
+import { Posts, UserPost } from '../components/PostsContext';
 
 export type Category = {
-  id: number;
+  categoryId: number;
   name: string;
 };
 
 export type Comments = {
-  id: number;
+  commentId: number;
   postId: number;
   username: string;
   content: string;
+};
+
+export type User = {
+  userId: number;
+  username: string;
 };
 
 const authKey = 'um.auth';
@@ -52,14 +45,14 @@ export function readToken(): string | undefined {
   return (JSON.parse(auth) as Auth).token;
 }
 
-export async function getPosts(): Promise<Posts[]> {
+export async function getPosts(): Promise<UserPost[]> {
   const response = await fetch('/api/posts', {
     headers: {
       'Content-Type': 'application/json',
     },
   });
   if (!response.ok) throw new Error(`Response status: ${response.status}`);
-  return (await response.json()) as Posts[];
+  return (await response.json()) as UserPost[];
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -81,7 +74,12 @@ export async function getPostsByCategory(
     },
   });
   if (!response.ok) throw new Error(`Response status: ${response.status}`);
-  return (await response.json()) as Posts[];
+  const data = (await response.json()) as Posts[];
+  if (categoryName === 'trending') {
+    const sortedData = data.sort((a, b) => b.views - a.views);
+    return sortedData;
+  }
+  return data;
 }
 
 export async function getComments(postId: number): Promise<Comments[]> {

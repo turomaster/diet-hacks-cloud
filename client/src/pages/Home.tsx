@@ -1,22 +1,17 @@
 import { Card } from '../components/Card';
-import { Category, Posts } from '../lib/data';
+import { Category } from '../lib/data';
 import { NavBar } from '../components/NavBar';
+import { usePosts } from '../components/usePosts';
 
 type Props = {
   isMobile: boolean | null;
-  posts: Posts[];
   categories: Category[];
-  handleNavClick: (name: string | null) => void;
   error: unknown;
 };
 
-export function Home({
-  isMobile,
-  posts,
-  categories,
-  handleNavClick,
-  error,
-}: Props) {
+export function Home({ isMobile, categories, error }: Props) {
+  const { posts } = usePosts();
+
   if (error || !posts) {
     return (
       <div>
@@ -27,14 +22,15 @@ export function Home({
 
   return (
     <div className="flex h-full">
-      <div className="flex">
-        {!isMobile && (
-          <NavBar handleNavClick={handleNavClick} categories={categories} />
-        )}
+      <div className="fixed w-12 h-full">
+        {!isMobile && <NavBar categories={categories} />}
       </div>
-      <div className="basis-full px-8">
-        {posts.map((post, index) => (
-          <Card key={post.title + index} post={post} />
+      <div
+        className={
+          isMobile ? 'basis-full px-8 mt-12' : 'basis-full ml-52 mt-12 px-8'
+        }>
+        {posts.map((post) => (
+          <Card key={post.postId} post={post} />
         ))}
         {!posts.length && (
           <div className="flex justify-center mt-2">

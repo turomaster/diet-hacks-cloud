@@ -1,28 +1,23 @@
 import { useParams } from 'react-router-dom';
 import { Card } from '../components/Card';
-import { Category, Comments, getComments, Posts } from '../lib/data';
+import { Category, Comments, getComments } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 import { SlLike } from 'react-icons/sl';
 import { SlDislike } from 'react-icons/sl';
 import { useEffect, useState } from 'react';
+import { usePosts } from '../components/usePosts';
 
 type Props = {
-  posts: Posts[];
   isMobile: boolean | null;
   categories: Category[];
-  handleNavClick: (name: string | null) => void;
 };
 
-export function Details({
-  posts,
-  isMobile,
-  categories,
-  handleNavClick,
-}: Props) {
+export function Details({ isMobile, categories }: Props) {
   const [error, setError] = useState<unknown>();
   const [comments, setComments] = useState<Comments[]>([]);
   const [replyToUser, setReplyToUser] = useState<string>();
   const { postId } = useParams();
+  const { posts } = usePosts();
 
   useEffect(() => {
     async function loadComments() {
@@ -42,7 +37,7 @@ export function Details({
     setReplyToUser(username);
   }
 
-  if (error) {
+  if (error || !posts) {
     return (
       <div>
         Error! {error instanceof Error ? error.message : 'Unknown error'}
@@ -53,14 +48,13 @@ export function Details({
   return (
     <div className="flex h-full">
       <div className="flex">
-        {!isMobile && (
-          <NavBar onClick={handleNavClick} categories={categories} />
-        )}
+        {!isMobile && <NavBar categories={categories} />}
       </div>
       <div className="basis-full px-8">
         {postId &&
           posts.map(
-            (post) => post.id === +postId && <Card key={post.id} post={post} />
+            (post) =>
+              post.postId === +postId && <Card key={post.postId} post={post} />
           )}
         <form className="mb-6">
           <div className="mb-4 flex shadow-md">
@@ -84,7 +78,7 @@ export function Details({
         <div className="shadow-md pl-2 py-2">
           <ul>
             {comments.map((comment) => (
-              <div key={comment.id}>
+              <div key={comment.commentId}>
                 <span>@{comment.username}</span>
                 <li>{comment.content}</li>
                 <div className="flex items-center mb-2">

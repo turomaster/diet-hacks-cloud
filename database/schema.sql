@@ -7,7 +7,7 @@ drop schema "public" cascade;
 create schema "public";
 
 CREATE TABLE "users" (
-  "id" serial PRIMARY KEY,
+  "userId" serial PRIMARY KEY,
   "username" text UNIQUE,
   "email" text UNIQUE,
   "hashedPassword" text,
@@ -16,7 +16,7 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "posts" (
-  "id" serial PRIMARY KEY,
+  "postId" serial PRIMARY KEY,
   "title" text,
   "calories" text,
   "body" text,
@@ -28,12 +28,12 @@ CREATE TABLE "posts" (
 );
 
 CREATE TABLE "categories" (
-  "id" serial PRIMARY KEY,
+  "categoryId" serial PRIMARY KEY,
   "name" text
 );
 
 CREATE TABLE "comments" (
-  "id" serial PRIMARY KEY,
+  "commentId" serial PRIMARY KEY,
   "postId" integer,
   "username" text,
   "content" text,
@@ -41,14 +41,14 @@ CREATE TABLE "comments" (
 );
 
 CREATE TABLE "commentVotes" (
-  "id" serial PRIMARY KEY,
+  "commentVoteId" serial PRIMARY KEY,
   "userId" integer,
   "commentId" integer,
   "voteType" text
 );
 
 CREATE TABLE "postVotes" (
-  "id" serial PRIMARY KEY,
+  "postVoteId" serial PRIMARY KEY,
   "userId" integer,
   "postId" integer,
   "voteType" text
@@ -60,18 +60,18 @@ COMMENT ON COLUMN "commentVotes"."voteType" IS 'Can be "like" or "dislike"';
 
 COMMENT ON COLUMN "postVotes"."voteType" IS 'Can be "upvote" or "downvote"';
 
-ALTER TABLE "posts" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+ALTER TABLE "posts" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
-ALTER TABLE "posts" ADD FOREIGN KEY ("categoryId") REFERENCES "categories" ("id");
+ALTER TABLE "posts" ADD FOREIGN KEY ("categoryId") REFERENCES "categories" ("categoryId");
 
-ALTER TABLE "comments" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("id") ON DELETE CASCADE;
+ALTER TABLE "comments" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("postId") ON DELETE CASCADE;
 
 ALTER TABLE "comments" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
-ALTER TABLE "commentVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+ALTER TABLE "commentVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
-ALTER TABLE "commentVotes" ADD FOREIGN KEY ("commentId") REFERENCES "comments" ("id");
+ALTER TABLE "commentVotes" ADD FOREIGN KEY ("commentId") REFERENCES "comments" ("commentId");
 
-ALTER TABLE "postVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+ALTER TABLE "postVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
-ALTER TABLE "postVotes" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("id");
+ALTER TABLE "postVotes" ADD FOREIGN KEY ("postId") REFERENCES "posts" ("postId");

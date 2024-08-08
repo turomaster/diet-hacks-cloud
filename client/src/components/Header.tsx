@@ -7,25 +7,18 @@ import { useRef, useState } from 'react';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { Category } from '../lib/data';
 import { useUser } from './useUser';
+import { usePosts } from './usePosts';
 
 type Props = {
   isMobile: boolean | null;
-  handleNavClick: (name: string | null) => void;
-  handleMenuClick: () => void;
-  isMenuVisible: boolean;
   categories: Category[];
 };
 
-export function Header({
-  isMobile,
-  handleNavClick,
-  handleMenuClick,
-  isMenuVisible,
-  categories,
-}: Props) {
+export function Header({ isMobile, categories }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const { user, handleSignOut } = useUser();
   const menu = useRef<HTMLDivElement>(null);
+  const { fetchCategoryName, handleMenuClick, isMenuVisible } = usePosts();
   const navigate = useNavigate();
 
   function handleClick() {
@@ -39,16 +32,16 @@ export function Header({
   function handleSignInOrOut() {
     if (user) {
       handleSignOut();
-      handleNavClick(null); // Closes menu by setting menuIsVisible to false
+      fetchCategoryName(null);
     } else {
-      handleNavClick(null);
+      fetchCategoryName(null);
       navigate('/sign-in');
     }
   }
 
   return (
     <>
-      <header className="bg-accent-gray">
+      <header className="bg-accent-gray fixed w-full">
         <div
           className={
             isMobile
@@ -66,11 +59,11 @@ export function Header({
       </header>
       <Outlet />
       {!isMobile && (
-        <DesktopMenu position={menu.current} isMenuVisible={isMenuVisible}>
+        <DesktopMenu position={menu.current}>
           <nav>
             <ul className="flex flex-col items-center bg-accent-gray border-2 rounded-lg">
               <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 w-56">
-                <Link to="/" onClick={() => handleNavClick(null)}>
+                <Link to="/" onClick={() => fetchCategoryName(null)}>
                   Home
                 </Link>
               </li>
@@ -81,45 +74,51 @@ export function Header({
                   {open &&
                     categories.map((category) => (
                       <li
-                        key={category.id}
+                        key={category.categoryId}
                         className="hover:bg-gray-200 text-center rounded-lg w-56">
                         <Link
                           to="/"
-                          onClick={() => handleNavClick(category.name)}>
+                          onClick={() => fetchCategoryName(category.name)}>
                           {category.name}
                         </Link>
                       </li>
                     ))}
                 </ul>
               </li>
-              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                {user && (
-                  <Link to="/" onClick={handleSignInOrOut}>
-                    Sign Out
+              {user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                  <Link to="/create-post" onClick={handleMenuClick}>
+                    Make a Post
                   </Link>
-                )}
-                {!user && (
+                </li>
+              )}
+              {!user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
                   <Link to="/sign-in" onClick={handleSignInOrOut}>
                     Sign In
                   </Link>
-                )}
-              </li>
-              <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                {!user && (
+                </li>
+              )}
+              {!user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
                   <Link to="/sign-up" onClick={handleSignInOrOut}>
                     Register
                   </Link>
-                )}
-              </li>
+                </li>
+              )}
+              {user && (
+                <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
+                  <Link to="/" onClick={handleSignInOrOut}>
+                    Sign Out
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </DesktopMenu>
       )}
       {isMenuVisible && isMobile && (
-        <MobileMenu
-          handleSignInOrOut={handleSignInOrOut}
-          handleNavClick={handleNavClick}
-        />
+        <MobileMenu handleSignInOrOut={handleSignInOrOut} />
       )}
     </>
   );
