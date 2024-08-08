@@ -27,7 +27,7 @@ export function Home({ isMobile, categories, error }: Props) {
       </div>
       <div
         className={
-          isMobile ? 'basis-full px-8 mt-12' : 'basis-full ml-52 px-8'
+          isMobile ? 'basis-full px-8 mt-12' : 'basis-full ml-52 mt-12 px-8'
         }>
         {posts.map((post) => (
           <Card key={post.postId} post={post} />

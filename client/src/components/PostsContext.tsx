@@ -83,7 +83,7 @@ export function PostsProvider({ children }: Props) {
     } else {
       fetchPosts();
     }
-    setIsMenuVisible(!isMenuVisible);
+    setIsMenuVisible(false);
   }
 
   function handleMenuClick() {

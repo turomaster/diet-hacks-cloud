@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { Category } from '../lib/data';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './useUser';
@@ -13,6 +13,12 @@ export function PostForm({ categories, isMobile }: Props) {
   const navigate = useNavigate();
   const { user, token } = useUser();
   const { fetchPosts } = usePosts();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,7 +50,12 @@ export function PostForm({ categories, isMobile }: Props) {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div
+      className={
+        isMobile
+          ? 'flex flex-col items-center mt-12 py-8 px-24 rounded-md bg-accent-gray'
+          : 'flex flex-col items-center mt-12 py-8 px-32 rounded-md bg-accent-gray'
+      }>
       <h2 className="text-2xl font-bold mb-2">Submit a Post</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex mb-1">

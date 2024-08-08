@@ -7,10 +7,14 @@ type AuthData = {
   token: string;
 };
 
+type Props = {
+  isMobile: boolean | null;
+};
+
 /**
  * Form that signs in a user.
  */
-export function SignInForm() {
+export function SignInForm({ isMobile }: Props) {
   const { handleSignIn } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
@@ -48,7 +52,12 @@ export function SignInForm() {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div
+      className={
+        isMobile
+          ? 'flex flex-col items-center mt-12 py-8 px-32 rounded-md bg-accent-gray'
+          : 'flex flex-col items-center mt-12 py-8 px-32 rounded-md bg-accent-gray'
+      }>
       <h2 className="text-2xl font-bold mb-2">Welcome Back!</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex mb-1">

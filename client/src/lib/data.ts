@@ -74,11 +74,12 @@ export async function getPostsByCategory(
     },
   });
   if (!response.ok) throw new Error(`Response status: ${response.status}`);
+  const data = (await response.json()) as Posts[];
   if (categoryName === 'trending') {
-    const data = (await response.json()) as Posts[];
-    return data.sort((a, b) => b.views - a.views);
+    const sortedData = data.sort((a, b) => b.views - a.views);
+    return sortedData;
   }
-  return (await response.json()) as Posts[];
+  return data;
 }
 
 export async function getComments(postId: number): Promise<Comments[]> {

@@ -2,10 +2,13 @@ import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from './UserContext';
 
+type Props = {
+  isMobile: boolean | null;
+};
 /**
  * Form that registers a user.
  */
-export function RegistrationForm() {
+export function RegistrationForm({ isMobile }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +38,12 @@ export function RegistrationForm() {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div
+      className={
+        isMobile
+          ? 'flex flex-col items-center mt-12 py-8 px-32 rounded-md bg-accent-gray'
+          : 'flex flex-col items-center mt-12 py-8 px-32 rounded-md bg-accent-gray'
+      }>
       <h2 className="text-2xl font-bold">Register</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex mb-1">
