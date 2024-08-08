@@ -17,7 +17,6 @@ type Props = {
 export function SignInForm({ isMobile }: Props) {
   const { handleSignIn } = useUser();
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
