@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { usePosts } from './usePosts';
 
 type Props = {
-  isMenuVisible: boolean;
   position: HTMLDivElement | null;
   children: ReactNode;
 };
 
-export function DesktopMenu({ isMenuVisible, position, children }: Props) {
+export function DesktopMenu({ position, children }: Props) {
+  const { isMenuVisible } = usePosts();
   if (!isMenuVisible || !position) return null;
 
   const r = position.getBoundingClientRect();

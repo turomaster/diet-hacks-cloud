@@ -1,33 +1,21 @@
-export type Posts = {
-  id: number;
-  title: string;
-  calories: number;
-  body: string;
-  userId: number;
-  categoryId: number;
-  totalVotes: number;
-  views: number;
-  createdAt: string;
-};
+import { Posts, UserPost } from '../components/PostsContext';
 
 export type Category = {
-  id: number;
+  categoryId: number;
   name: string;
 };
 
 export type Comments = {
-  id: number;
+  commentId: number;
   postId: number;
   username: string;
   content: string;
 };
 
 export type User = {
-  id: number;
+  userId: number;
   username: string;
 };
-
-export type UserPost = Posts & User;
 
 const authKey = 'um.auth';
 
@@ -86,6 +74,10 @@ export async function getPostsByCategory(
     },
   });
   if (!response.ok) throw new Error(`Response status: ${response.status}`);
+  if (categoryName === 'trending') {
+    const data = (await response.json()) as Posts[];
+    return data.sort((a, b) => b.views - a.views);
+  }
   return (await response.json()) as Posts[];
 }
 

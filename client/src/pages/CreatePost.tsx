@@ -10,8 +10,8 @@ export function CreatePost({ categories, isMobile }: Props) {
     <div
       className={
         isMobile
-          ? 'flex justify-center rounded-md mx-10 mt-12 py-8 bg-accent-gray'
-          : 'flex justify-center rounded-md mx-72 mt-12 py-8 bg-accent-gray'
+          ? 'flex justify-center rounded-md mx-10 py-8 bg-accent-gray'
+          : 'flex justify-center rounded-md mx-72 py-8 bg-accent-gray'
       }>
       <PostForm isMobile={isMobile} categories={categories} />
     </div>

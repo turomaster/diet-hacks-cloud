@@ -3,22 +3,18 @@ import { Link } from 'react-router-dom';
 import { Category, getCategories } from '../lib/data';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { useUser } from './useUser';
+import { usePosts } from './usePosts';
 
 type Props = {
   handleSignInOrOut: () => void;
-  handleNavClick: (name: string | null) => void;
-  handleMenuClick: () => void;
 };
 
-export function MobileMenu({
-  handleSignInOrOut,
-  handleNavClick,
-  handleMenuClick,
-}: Props) {
+export function MobileMenu({ handleSignInOrOut }: Props) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<unknown>();
   const { user } = useUser();
+  const { fetchCategoryName, handleMenuClick } = usePosts();
 
   useEffect(() => {
     async function loadCategories() {
@@ -53,7 +49,7 @@ export function MobileMenu({
       <nav>
         <ul className="flex flex-col items-center text-center">
           <li className="rounded-lg mx-4 mb-4 bg-accent-gray w-80 mt-4">
-            <Link to="/" onClick={() => handleNavClick(null)}>
+            <Link to="/" onClick={() => fetchCategoryName(null)}>
               Home
             </Link>
           </li>
@@ -63,8 +59,10 @@ export function MobileMenu({
             <ul>
               {open &&
                 categories.map((category) => (
-                  <li key={category.id}>
-                    <Link to="/" onClick={() => handleNavClick(category.name)}>
+                  <li key={category.categoryId}>
+                    <Link
+                      to="/"
+                      onClick={() => fetchCategoryName(category.name)}>
                       {category.name}
                     </Link>
                   </li>

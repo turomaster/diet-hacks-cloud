@@ -49,7 +49,7 @@ app.post('/api/auth/sign-up', async (req, res, next) => {
     const sql = `
       insert into "users" ("username", "hashedPassword")
         values ($1, $2)
-        returning "id", "username", "createdAt";
+        returning "userId", "username", "createdAt";
     `;
 
     const params = [username, hashedPassword];
@@ -69,7 +69,7 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
     }
 
     const sql = `
-      select "id",
+      select "userId",
              "hashedPassword"
         from "users"
         where "username" = $1
@@ -78,11 +78,11 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
     const result = await db.query(sql, params);
     if (!result) throw new ClientError(401, `User ${username} was not found`);
 
-    const { id, hashedPassword } = result.rows[0];
+    const { userId, hashedPassword } = result.rows[0];
 
     if (await argon2.verify(hashedPassword, password)) {
       const payload = {
-        id,
+        userId,
         username,
       };
       const token = jwt.sign(payload, hashKey);
@@ -101,7 +101,7 @@ app.get('/api/posts', async (req, res, next) => {
       select "body",
              "calories",
              "categoryId",
-             "id",
+             "postId",
              "role",
              "title",
              "totalVotes",
@@ -109,7 +109,7 @@ app.get('/api/posts', async (req, res, next) => {
              "username",
              "views"
         from "posts"
-        join "users" using ("id")
+        join "users" using ("userId")
     `;
 
     const result = await db.query<UserPost[]>(sql);
@@ -119,20 +119,20 @@ app.get('/api/posts', async (req, res, next) => {
   }
 });
 
-app.get('/api/posts/:id', async (req, res, next) => {
+app.get('/api/posts/:postId', async (req, res, next) => {
   try {
-    const { id } = req.params;
-    if (!Number.isInteger(+id))
-      throw new ClientError(400, `id: ${id} must be a number.`);
+    const { postId } = req.params;
+    if (!Number.isInteger(+postId))
+      throw new ClientError(400, `id: ${postId} must be a number.`);
     const sql = `
       select *
         from "posts"
-        where "id" = $1;
+        where "postId" = $1;
     `;
-    const params = [id];
+    const params = [postId];
     const result = await db.query<Post[]>(sql, params);
     if (!result.rows[0])
-      throw new ClientError(404, `post with id: ${id} does not exist.`);
+      throw new ClientError(404, `post with id: ${postId} does not exist.`);
     res.json(result.rows[0]);
   } catch (err) {
     next(err);
@@ -162,17 +162,17 @@ app.get('/api/users/:userId', async (req, res, next) => {
 
 app.post('/api/posts', authMiddleware, async (req, res, next) => {
   try {
-    const { title, categoryId, calories, body } = req.body;
+    const { title, categoryId, calories, body, userId } = req.body;
     if (!title || !body || !categoryId) {
       throw new ClientError(400, 'title, body and categoryId is required.');
     }
     const sql = `
-      insert into "posts" ("title", "categoryId", "calories", "body")
-        values ($1, $2, $3, $4)
+      insert into "posts" ("title", "categoryId", "calories", "body", "userId")
+        values ($1, $2, $3, $4, $5)
         returning *;
     `;
-    const caloriesValue = calories || null;
-    const params = [title, categoryId, caloriesValue, body];
+    const caloriesValue = calories || null; // if calories aren't entered, the post doesn't get made.
+    const params = [title, categoryId, caloriesValue, body, userId];
     const result = await db.query<Post>(sql, params);
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -297,8 +297,8 @@ app.get('/api/categories/:categoryName', async (req, res, next) => {
     const sql = `
       select *
         from "posts"
-        join "categories" using ("id")
-        join "users" using ("id")
+        join "categories" using ("categoryId")
+        join "users" using ("userId")
         where "categories"."name" = $1;
     `;
     const params = [categoryName];
