@@ -70,32 +70,32 @@ export function MobileMenu({ handleSignInOrOut }: Props) {
             </ul>
           </li>
           {!user && (
-            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-              <Link to="/sign-in" onClick={handleSignInOrOut}>
-                Sign In
-              </Link>
-            </li>
+            <>
+              <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+                <Link to="/sign-in" onClick={handleSignInOrOut}>
+                  Sign In
+                </Link>
+              </li>
+              <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+                <Link to="/sign-up" onClick={handleSignInOrOut}>
+                  Register
+                </Link>
+              </li>
+            </>
           )}
           {user && (
-            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-              <Link to="/create-post" onClick={handleMenuClick}>
-                Make a Post
-              </Link>
-            </li>
-          )}
-          {!user && (
-            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-              <Link to="/sign-up" onClick={handleSignInOrOut}>
-                Register
-              </Link>
-            </li>
-          )}
-          {user && (
-            <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-              <Link to="/" onClick={handleSignInOrOut}>
-                Sign Out
-              </Link>
-            </li>
+            <>
+              <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+                <Link to="/create-post" onClick={handleMenuClick}>
+                  Make a Post
+                </Link>
+              </li>
+              <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
+                <Link to="/" onClick={handleSignInOrOut}>
+                  Sign Out
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </nav>

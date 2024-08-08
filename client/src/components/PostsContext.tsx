@@ -78,11 +78,7 @@ export function PostsProvider({ children }: Props) {
   }
 
   function fetchCategoryName(categoryName: string | null) {
-    if (categoryName) {
-      setCategoryName(categoryName);
-    } else {
-      fetchPosts();
-    }
+    setCategoryName(categoryName);
     setIsMenuVisible(false);
   }
 
