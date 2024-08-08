@@ -4,8 +4,9 @@ import { Category, Comments, getComments } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 import { SlLike } from 'react-icons/sl';
 import { SlDislike } from 'react-icons/sl';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { usePosts } from '../components/usePosts';
+import { useUser } from '../components/useUser';
 
 type Props = {
   isMobile: boolean | null;
@@ -18,6 +19,8 @@ export function Details({ isMobile, categories }: Props) {
   const [replyToUser, setReplyToUser] = useState<string>();
   const { postId } = useParams();
   const { posts } = usePosts();
+  const { user, token } = useUser();
+  console.log('comments', comments);
 
   useEffect(() => {
     async function loadComments() {
@@ -33,7 +36,35 @@ export function Details({ isMobile, categories }: Props) {
     loadComments();
   }, [postId]);
 
-  function handleClick(username: string) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const userData = Object.fromEntries(formData);
+      console.log('userData', userData);
+      const newComment = {
+        ...userData,
+        userId: user?.userId,
+      };
+      const req = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newComment),
+      };
+      console.log('req', req);
+      const res = await fetch(`/api/comments/${postId}`, req);
+      if (!res.ok) {
+        throw new Error(`fetch Error ${res.status}`);
+      }
+    } catch (err) {
+      alert(`Error signing in: ${err}`);
+    }
+  }
+
+  function handleReplyClick(username: string) {
     setReplyToUser(username);
   }
 
@@ -50,24 +81,22 @@ export function Details({ isMobile, categories }: Props) {
       <div className="flex">
         {!isMobile && <NavBar categories={categories} />}
       </div>
-      <div className="basis-full px-8">
+      <div className="mt-12 basis-full px-8">
         {postId &&
           posts.map(
             (post) =>
               post.postId === +postId && <Card key={post.postId} post={post} />
           )}
-        <form className="mb-6">
+        <form onSubmit={handleSubmit} className="mb-6">
           <div className="mb-4 flex shadow-md">
-            <label htmlFor="comment" className="sr-only">
-              Your comment
-            </label>
             <textarea
-              id="comment"
+              name="content"
               rows={2}
               className="w-full text-sm pt-2 pl-2 border-0 focus:ring-0 focus:outline-none dark:placeholder-gray-400"
               placeholder="Write a comment..."
               defaultValue={replyToUser && `@${replyToUser}`}
-              required></textarea>
+              required
+            />
           </div>
           <button
             type="submit"
@@ -85,7 +114,7 @@ export function Details({ isMobile, categories }: Props) {
                   <SlLike className="mr-2" />
                   <div className="flex min-w-6">12</div>
                   <SlDislike className="mr-2" />
-                  <button onClick={() => handleClick(comment.username)}>
+                  <button onClick={() => handleReplyClick(comment.username)}>
                     Reply
                   </button>
                 </div>

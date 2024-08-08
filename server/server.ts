@@ -233,6 +233,7 @@ app.get('/api/comments/:postId', async (req, res, next) => {
     const sql = `
       select *
         from "comments"
+        join "users" using ("userId")
         where "postId" = $1;
     `;
     const params = [postId];
@@ -243,7 +244,7 @@ app.get('/api/comments/:postId', async (req, res, next) => {
   }
 });
 
-app.post('/api/comments/:postId', async (req, res, next) => {
+app.post('/api/comments/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
