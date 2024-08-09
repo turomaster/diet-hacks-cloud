@@ -56,6 +56,12 @@ export function Details({ isMobile, categories }: Props) {
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
+      if (postId) {
+        const result = await getComments(+postId);
+        setComments(result);
+      }
+      const target = event.target as HTMLFormElement;
+      target.reset();
     } catch (err) {
       alert(`Error signing in: ${err}`);
     }
@@ -97,7 +103,7 @@ export function Details({ isMobile, categories }: Props) {
           </div>
           <button
             type="submit"
-            className="items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-400 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-green-600">
+            className="items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-lime-green rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-green-600">
             Post comment
           </button>
         </form>

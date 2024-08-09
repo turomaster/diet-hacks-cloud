@@ -1,5 +1,4 @@
 import { RxHamburgerMenu } from 'react-icons/rx';
-import { IoLogoDocker } from 'react-icons/io5';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { MobileMenu } from './MobileMenu';
 import { DesktopMenu } from './DesktopMenu';
@@ -8,6 +7,7 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { Category } from '../lib/data';
 import { useUser } from './useUser';
 import { usePosts } from './usePosts';
+import { MdFastfood } from 'react-icons/md';
 
 type Props = {
   isMobile: boolean | null;
@@ -49,7 +49,7 @@ export function Header({ isMobile, categories }: Props) {
               : 'flex justify-between items-center px-10 h-14'
           }>
           <div className="flex items-center space-x-2">
-            <IoLogoDocker className="text-2xl" />
+            <MdFastfood className="text-2xl" style={{ color: '#32CD32' }} />
             <p className="text-lg">Diet Hacks</p>
           </div>
           <div ref={menu}>

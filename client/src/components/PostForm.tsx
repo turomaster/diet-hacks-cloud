@@ -104,7 +104,7 @@ export function PostForm({ categories, isMobile }: Props) {
           </div>
         </div>
         <div className="flex justify-center">
-          <button className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-green-400 text-white hover:bg-green-700">
+          <button className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-lime-green text-white hover:bg-green-700">
             Submit
           </button>
         </div>
