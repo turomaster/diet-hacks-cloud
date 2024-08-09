@@ -22,7 +22,6 @@ CREATE TABLE "posts" (
   "body" text,
   "userId" integer,
   "categoryId" integer,
-  "totalVotes" integer,
   "views" integer,
   "createdAt" timestamp NOT NULL DEFAULT (now())
 );
@@ -52,6 +51,7 @@ CREATE TABLE "postVotes" (
   "postVoteId" serial PRIMARY KEY,
   "userId" integer,
   "postId" integer,
+  "totalVotes" integer,
   "voteType" text
 );
 

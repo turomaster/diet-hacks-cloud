@@ -102,6 +102,26 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  async function handleUpvote(postId: number) {
+    try {
+      const updatedPost = {
+        ...post, totalVotes: post.totalVotes++
+      }
+      const req = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedPost),
+      }
+      const res = await fetch(`/api/postVotes/${postId}`, req);
+      if (!res.ok) throw new Error(`fetch Error: ${res.status}`);
+    } catch (error) {
+      setError(error);
+    }
+  }
+
   function fetchCategoryName(categoryName: string | null) {
     setCategoryName(categoryName);
     setIsMenuVisible(false);

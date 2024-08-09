@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- Remove when used */
 import 'dotenv/config';
 import express, { application } from 'express';
-import pg, { DatabaseError } from 'pg';
+import pg, { Client, DatabaseError } from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { authMiddleware, ClientError, errorMiddleware } from './lib/index.js';
@@ -139,26 +139,26 @@ app.get('/api/posts/:postId', async (req, res, next) => {
   }
 });
 
-app.get('/api/users/:userId', async (req, res, next) => {
-  try {
-    const { userId } = req.params;
-    if (!Number.isInteger(+userId))
-      throw new ClientError(400, `userId: ${userId} must be a number.`);
-    const sql = `
-      select *
-        from "posts"
-        join "users" on "posts"."userId" = "users"."userId"
-        where "users."userId" = $1;
-    `;
-    const params = [userId];
-    const result = await db.query<Post[]>(sql, params);
-    if (!result.rows[0])
-      throw new ClientError(404, `post with userId: ${userId} does not exist.`);
-    res.json(result.rows[0]);
-  } catch (err) {
-    next(err);
-  }
-});
+// app.get('/api/users/:userId', async (req, res, next) => {
+//   try {
+//     const { userId } = req.params;
+//     if (!Number.isInteger(+userId))
+//       throw new ClientError(400, `userId: ${userId} must be a number.`);
+//     const sql = `
+//       select *
+//         from "posts"
+//         join "users" on "posts"."userId" = "users"."userId"
+//         where "users."userId" = $1;
+//     `;
+//     const params = [userId];
+//     const result = await db.query<Post[]>(sql, params);
+//     if (!result.rows[0])
+//       throw new ClientError(404, `post with userId: ${userId} does not exist.`);
+//     res.json(result.rows[0]);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 app.post('/api/posts', authMiddleware, async (req, res, next) => {
   try {
@@ -171,7 +171,7 @@ app.post('/api/posts', authMiddleware, async (req, res, next) => {
         values ($1, $2, $3, $4, $5)
         returning *;
     `;
-    const caloriesValue = calories || null; // if calories aren't entered, the post doesn't get made.
+    const caloriesValue = calories || null;
     const params = [title, categoryId, caloriesValue, body, userId];
     const result = await db.query<Post>(sql, params);
     res.status(201).json(result.rows[0]);
@@ -251,7 +251,7 @@ app.post('/api/comments/:postId', authMiddleware, async (req, res, next) => {
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
     const { content, userId, username } = req.body;
-    if (!content) throw new ClientError(400, 'content and userId is required');
+    if (!content || !userId || !username) throw new ClientError(400, 'content and userId is required');
     const sql = `
       insert into "comments" ("content", "userId", "postId", "username")
         values ($1, $2, $3, $4)
@@ -320,6 +320,49 @@ app.get('/api/categories/trending', async (req, res, next) => {
     `;
     const result = await db.query<Post[]>(sql);
     res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/postVotes/:postId', async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    if (!Number.isInteger(+postId)) throw new ClientError(400, `postId: ${postId} must be a number.`);
+    const { userId, voteType, totalVotes } = req.body;
+    if (!userId || !voteType) throw new ClientError(400, 'userId and voteType are required.');
+    const sql = `
+      insert into "postVotes" ("postId", "userId", "voteType", "totalVotes")
+        values ($1, $2, $3, $4)
+        returning *;
+    `;
+    const params = [postId, userId, voteType, totalVotes];
+    const result = await db.query(sql, params);
+    res.json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+})
+
+app.put('/api/postVotes/:userId', async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    if (!Number.isInteger(+userId))
+      throw new ClientError(400, `userId: ${userId} must be a number.`);
+    const { voteType, totalVotes } = req.body;
+    if (!userId)
+      throw new ClientError(400, 'userId and voteType are required.');
+    const sql = `
+      update "postVotes"
+        set "voteType" = $1,
+            "totalVotes" = $2
+        where "userId" = $3
+        returning *;
+    `;
+    const voteTypeValue = voteType || null;
+    const params = [voteTypeValue, totalVotes, userId];
+    const result = await db.query(sql, params);
+    res.json(result.rows[0]);
   } catch (err) {
     next(err);
   }
