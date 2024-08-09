@@ -7,12 +7,15 @@ import { UserPost } from './PostsContext';
 
 type Props = {
   post: UserPost;
+  handleViews: (postId: number) => void;
 };
 
-export function Card({ post }: Props) {
+export function Card({ post, handleViews }: Props) {
   return (
     <Link to={`/post/${post.postId}`}>
-      <div className="card flex flex-col shadow-md p-4 my-4">
+      <div
+        className="card flex flex-col shadow-md p-4 my-4"
+        onClick={() => handleViews(post.postId)}>
         <div className="card-title font-bold">{post.title}</div>
         <div className="card-calories text-gray-400 py-2 min-h-10">
           {post.calories ? post.calories + ' Calories' : ''}

@@ -4,8 +4,9 @@ import { Category, Comments, getComments } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 import { SlLike } from 'react-icons/sl';
 import { SlDislike } from 'react-icons/sl';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { usePosts } from '../components/usePosts';
+import { useUser } from '../components/useUser';
 
 type Props = {
   isMobile: boolean | null;
@@ -17,7 +18,9 @@ export function Details({ isMobile, categories }: Props) {
   const [comments, setComments] = useState<Comments[]>([]);
   const [replyToUser, setReplyToUser] = useState<string>();
   const { postId } = useParams();
-  const { posts } = usePosts();
+  const { posts, handleViews } = usePosts();
+  const { user, token } = useUser();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     async function loadComments() {
@@ -33,7 +36,49 @@ export function Details({ isMobile, categories }: Props) {
     loadComments();
   }, [postId]);
 
-  function handleClick(username: string) {
+  // Set the cursor after the username that you are replying to
+  useEffect(() => {
+    if (textareaRef.current) {
+      const length = textareaRef.current.value.length;
+      textareaRef.current.setSelectionRange(length, length);
+      textareaRef.current.focus();
+    }
+  }, [replyToUser]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const userData = Object.fromEntries(formData);
+      const newComment = {
+        ...userData,
+        userId: user?.userId,
+        username: user?.username,
+      };
+      const req = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newComment),
+      };
+      const res = await fetch(`/api/comments/${postId}`, req);
+      if (!res.ok) {
+        throw new Error(`fetch Error ${res.status}`);
+      }
+      if (postId) {
+        const result = await getComments(+postId);
+        setComments(result);
+      }
+      const target = event.target as HTMLFormElement;
+      target.reset();
+    } catch (err) {
+      alert(`Error signing in: ${err}`);
+    }
+  }
+
+  function handleReplyClick(username: string) {
     setReplyToUser(username);
   }
 
@@ -50,28 +95,33 @@ export function Details({ isMobile, categories }: Props) {
       <div className="flex">
         {!isMobile && <NavBar categories={categories} />}
       </div>
-      <div className="basis-full px-8">
+      <div className="mt-12 basis-full px-8">
         {postId &&
           posts.map(
             (post) =>
-              post.postId === +postId && <Card key={post.postId} post={post} />
+              post.postId === +postId && (
+                <Card
+                  key={post.postId}
+                  post={post}
+                  handleViews={() => handleViews(post)}
+                />
+              )
           )}
-        <form className="mb-6">
+        <form onSubmit={handleSubmit} className="mb-6">
           <div className="mb-4 flex shadow-md">
-            <label htmlFor="comment" className="sr-only">
-              Your comment
-            </label>
             <textarea
-              id="comment"
+              name="content"
               rows={2}
+              ref={textareaRef}
               className="w-full text-sm pt-2 pl-2 border-0 focus:ring-0 focus:outline-none dark:placeholder-gray-400"
               placeholder="Write a comment..."
               defaultValue={replyToUser && `@${replyToUser}`}
-              required></textarea>
+              required
+            />
           </div>
           <button
             type="submit"
-            className="items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-400 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-green-600">
+            className="items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-lime-green rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-green-600">
             Post comment
           </button>
         </form>
@@ -85,7 +135,7 @@ export function Details({ isMobile, categories }: Props) {
                   <SlLike className="mr-2" />
                   <div className="flex min-w-6">12</div>
                   <SlDislike className="mr-2" />
-                  <button onClick={() => handleClick(comment.username)}>
+                  <button onClick={() => handleReplyClick(comment.username)}>
                     Reply
                   </button>
                 </div>

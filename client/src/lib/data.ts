@@ -78,8 +78,9 @@ export async function getPostsByCategory(
   if (categoryName === 'trending') {
     const sortedData = data.sort((a, b) => b.views - a.views);
     return sortedData;
+  } else {
+    return data;
   }
-  return data;
 }
 
 export async function getComments(postId: number): Promise<Comments[]> {

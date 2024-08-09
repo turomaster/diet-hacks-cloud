@@ -71,7 +71,7 @@ export function RegistrationForm({ isMobile }: Props) {
         <div className="flex justify-center">
           <button
             disabled={isLoading}
-            className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-green-400 text-white hover:bg-green-700">
+            className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-lime-green text-white hover:bg-green-700">
             Register
           </button>
         </div>

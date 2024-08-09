@@ -15,7 +15,7 @@ type Props = {
  * Form that signs in a user.
  */
 export function SignInForm({ isMobile }: Props) {
-  const { handleSignIn } = useUser();
+  const { handleSignIn, user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -84,7 +84,7 @@ export function SignInForm({ isMobile }: Props) {
         <div className="flex justify-center">
           <button
             disabled={isLoading}
-            className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-green-400 text-white hover:bg-green-700">
+            className="align-middle text-center border rounded py-2.5 px-6 text-xs font-medium bg-lime-green text-white hover:bg-green-700">
             Sign In
           </button>
         </div>

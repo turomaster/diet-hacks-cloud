@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         'accent-gray': '#F8F9FA',
-        'off-white': '#FFF',
+        'lime-green': '#32CD32',
       },
       screens: {
         sm: '640px',
