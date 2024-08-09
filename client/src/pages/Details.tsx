@@ -4,7 +4,7 @@ import { Category, Comments, getComments } from '../lib/data';
 import { NavBar } from '../components/NavBar';
 import { SlLike } from 'react-icons/sl';
 import { SlDislike } from 'react-icons/sl';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { usePosts } from '../components/usePosts';
 import { useUser } from '../components/useUser';
 
@@ -20,6 +20,7 @@ export function Details({ isMobile, categories }: Props) {
   const { postId } = useParams();
   const { posts } = usePosts();
   const { user, token } = useUser();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     async function loadComments() {
@@ -34,6 +35,15 @@ export function Details({ isMobile, categories }: Props) {
     }
     loadComments();
   }, [postId]);
+
+  // Set the cursor after the username that you are replying to
+  useEffect(() => {
+    if (textareaRef.current) {
+      const length = textareaRef.current.value.length;
+      textareaRef.current.setSelectionRange(length, length);
+      textareaRef.current.focus();
+    }
+  }, [replyToUser]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -96,6 +106,7 @@ export function Details({ isMobile, categories }: Props) {
             <textarea
               name="content"
               rows={2}
+              ref={textareaRef}
               className="w-full text-sm pt-2 pl-2 border-0 focus:ring-0 focus:outline-none dark:placeholder-gray-400"
               placeholder="Write a comment..."
               defaultValue={replyToUser && `@${replyToUser}`}
