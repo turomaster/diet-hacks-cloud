@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import { getPosts, getPostsByCategory } from '../lib/data';
 import { User } from './UserContext';
+import { useUser } from './useUser';
 
 export type Posts = {
   postId: number;
@@ -19,6 +20,7 @@ export type UserPost = Posts & User;
 export type PostsContextValues = {
   posts: UserPost[] | Posts[] | undefined;
   fetchPosts: () => void;
+  handleViews: (post: Posts) => void;
   fetchCategoryName: (categoryName: string | null) => void;
   handleMenuClick: () => void;
   isMenuVisible: boolean | undefined;
@@ -27,6 +29,7 @@ export type PostsContextValues = {
 export const PostsContext = createContext<PostsContextValues>({
   posts: undefined,
   fetchPosts: () => undefined,
+  handleViews: () => undefined,
   fetchCategoryName: () => undefined,
   handleMenuClick: () => undefined,
   isMenuVisible: undefined,
@@ -41,6 +44,7 @@ export function PostsProvider({ children }: Props) {
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
+  const { token } = useUser();
 
   useEffect(() => {
     async function loadPosts() {
@@ -77,6 +81,27 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  async function handleViews(post: Posts) {
+    try {
+      const updatedPost = {
+        ...post,
+        views: post.views++,
+      };
+      const req = {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPost),
+      };
+      const res = await fetch(`/api/posts/${post.postId}`, req);
+      if (!res.ok) throw new Error(`fetch Error: ${res.status}`);
+    } catch (error) {
+      setError(error);
+    }
+  }
+
   function fetchCategoryName(categoryName: string | null) {
     setCategoryName(categoryName);
     setIsMenuVisible(false);
@@ -97,6 +122,7 @@ export function PostsProvider({ children }: Props) {
   const contextValue = {
     posts,
     fetchPosts,
+    handleViews,
     fetchCategoryName,
     handleMenuClick,
     isMenuVisible,

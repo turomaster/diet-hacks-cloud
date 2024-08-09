@@ -18,7 +18,7 @@ export function Details({ isMobile, categories }: Props) {
   const [comments, setComments] = useState<Comments[]>([]);
   const [replyToUser, setReplyToUser] = useState<string>();
   const { postId } = useParams();
-  const { posts } = usePosts();
+  const { posts, handleViews } = usePosts();
   const { user, token } = useUser();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -99,7 +99,13 @@ export function Details({ isMobile, categories }: Props) {
         {postId &&
           posts.map(
             (post) =>
-              post.postId === +postId && <Card key={post.postId} post={post} />
+              post.postId === +postId && (
+                <Card
+                  key={post.postId}
+                  post={post}
+                  handleViews={() => handleViews(post)}
+                />
+              )
           )}
         <form onSubmit={handleSubmit} className="mb-6">
           <div className="mb-4 flex shadow-md">

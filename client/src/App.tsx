@@ -64,7 +64,13 @@ export function App() {
             element={<Header isMobile={isMobile} categories={categories} />}>
             <Route
               index
-              element={<Home categories={categories} isMobile={isMobile} />}
+              element={
+                <Home
+                  categories={categories}
+                  isMobile={isMobile}
+                  error={error}
+                />
+              }
             />
             <Route
               path={`/post/:postId`}
