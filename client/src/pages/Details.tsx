@@ -43,6 +43,7 @@ export function Details({ isMobile, categories }: Props) {
       const newComment = {
         ...userData,
         userId: user?.userId,
+        username: user?.username,
       };
       const req = {
         method: 'POST',

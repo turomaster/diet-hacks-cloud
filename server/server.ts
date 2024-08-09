@@ -249,14 +249,14 @@ app.post('/api/comments/:postId', authMiddleware, async (req, res, next) => {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
-    const { content, userId } = req.body;
+    const { content, userId, username } = req.body;
     if (!content) throw new ClientError(400, 'content and userId is required');
     const sql = `
-      insert into "comments" ("content", "userId", "postId")
-        values ($1, $2, $3)
+      insert into "comments" ("content", "userId", "postId", "username")
+        values ($1, $2, $3, $4)
         returning *;
     `;
-    const params = [content, userId, postId];
+    const params = [content, userId, postId, username];
     const result = await db.query<Comment>(sql, params);
     res.status(201).json(result.rows[0]);
   } catch (err) {
