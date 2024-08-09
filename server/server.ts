@@ -147,8 +147,8 @@ app.get('/api/users/:userId', async (req, res, next) => {
     const sql = `
       select *
         from "posts"
-        join "users" on "posts"."userId" = "users"."id"
-        where "users."id" = $1;
+        join "users" on "posts"."userId" = "users"."userId"
+        where "users."userId" = $1;
     `;
     const params = [userId];
     const result = await db.query<Post[]>(sql, params);
@@ -180,12 +180,12 @@ app.post('/api/posts', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.put('/api/posts/:postId', async (req, res, next) => {
+app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId ${postId} must be a number.`);
-    const { title, calories, body } = req.body;
+    const { title, calories, body, views } = req.body;
     if (!title || !calories || !body) {
       throw new ClientError(400, 'title, calories, and body is required.');
     }
@@ -193,11 +193,12 @@ app.put('/api/posts/:postId', async (req, res, next) => {
       update "posts"
         set "title" = $1,
             "calories" = $2,
-            "body" = $3
-        where "id" = $4
+            "body" = $3,
+            "views" = $4
+        where "postId" = $5
         returning *;
     `;
-    const params = [title, calories, body, postId];
+    const params = [title, calories, body, views, postId];
     const result = await db.query<Post>(sql, params);
     if (!result.rows[0])
       throw new ClientError(404, `Cannot find post with postId: ${postId}`);
@@ -215,7 +216,7 @@ app.delete('/api/posts/:postId', async (req, res, next) => {
 
     const sql = `
       delete from "posts"
-        where "id" = $1;
+        where "postId" = $1;
     `;
     const params = [postId];
     await db.query(sql, params);
