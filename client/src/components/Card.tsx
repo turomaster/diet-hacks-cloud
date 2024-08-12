@@ -5,9 +5,7 @@ import { PiArrowFatUpFill } from 'react-icons/pi';
 import { PiArrowFatDown } from 'react-icons/pi';
 import { PiArrowFatDownFill } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
-import { UserPost } from './PostsContext';
 import { usePosts } from './usePosts';
-import { useUser } from './useUser';
 
 type Props = {
   post: UserPost;
@@ -17,10 +15,14 @@ type Props = {
 
 export function Card({ post, handleViews, handleUpvote }: Props) {
   const { postVotes } = usePosts();
-  const { user } = useUser()
+  let totalVotes = 0;
 
   const result = postVotes?.find((vote) => vote.postId === post.postId)
-
+  postVotes?.map((vote) => {
+    if (vote.postId === post.postId && vote.voteType === "upvote") {
+      totalVotes++;
+    }
+  })
   return (
     <div
       className="card flex flex-col shadow-md p-4 my-4"
@@ -50,7 +52,7 @@ export function Card({ post, handleViews, handleUpvote }: Props) {
                       onClick={() => handleUpvote(post.postId)}
                     />
             }
-            <div className="total-votes px-2">12</div>
+            <div className="total-votes px-2">{totalVotes}</div>
             <PiArrowFatDown className="cursor-pointer text-2xl" />
           </div>
           <div className="post-actions flex items-center">

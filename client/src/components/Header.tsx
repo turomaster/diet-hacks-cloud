@@ -108,7 +108,7 @@ export function Header({ isMobile, categories }: Props) {
               )}
               {user && (
                 <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                  <Link to="/" onClick={handleSignInOrOut}>
+                  <Link to="/sign-in" onClick={handleSignInOrOut}>
                     Sign Out
                   </Link>
                 </li>

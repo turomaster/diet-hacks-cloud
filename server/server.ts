@@ -109,6 +109,7 @@ app.get('/api/posts', async (req, res, next) => {
              "views"
         from "posts"
         join "users" using ("userId")
+        order by "postId" desc;
     `;
 
     const result = await db.query<UserPost[]>(sql);

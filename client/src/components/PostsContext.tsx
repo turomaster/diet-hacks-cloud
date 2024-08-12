@@ -88,8 +88,6 @@ export function PostsProvider({ children }: Props) {
     loadPosts();
   }, [categoryName]);
 
-
-
   async function checkUpvote() {
     try {
       const result = await fetch(`/api/postVotes`);
