@@ -6,6 +6,7 @@ import { PiArrowFatDown } from 'react-icons/pi';
 import { PiArrowFatDownFill } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
 import { usePosts } from './usePosts';
+import { useUser } from './useUser';
 
 type Props = {
   post: UserPost;
@@ -15,9 +16,10 @@ type Props = {
 
 export function Card({ post, handleViews, handleUpvote }: Props) {
   const { postVotes } = usePosts();
+  const { user } = useUser();
   let totalVotes = 0;
 
-  const result = postVotes?.find((vote) => vote.postId === post.postId)
+  const result = postVotes?.find((vote) => vote.postId === post.postId && user?.userId === vote.userId);
   postVotes?.map((vote) => {
     if (vote.postId === post.postId && vote.voteType === "upvote") {
       totalVotes++;
