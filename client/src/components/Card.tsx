@@ -1,16 +1,19 @@
 import { MdFavoriteBorder } from 'react-icons/md';
 import { IoShareOutline } from 'react-icons/io5';
 import { PiArrowFatUp } from 'react-icons/pi';
+import { PiArrowFatUpFill } from 'react-icons/pi';
 import { PiArrowFatDown } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
 import { UserPost } from './PostsContext';
 
 type Props = {
   post: UserPost;
+  hasUpvoted: boolean | undefined;
   handleViews: (postId: number) => void;
+  handleUpvote: (postId: number) => void;
 };
 
-export function Card({ post, handleViews }: Props) {
+export function Card({ post, handleViews, handleUpvote, hasUpvoted }: Props) {
   return (
     <Link to={`/post/${post.postId}`}>
       <div
@@ -24,10 +27,18 @@ export function Card({ post, handleViews }: Props) {
         <div className="card-footer flex flex-wrap mt-4">
           <div className="flex basis-full justify-between">
             <div className="vote-actions flex items-center">
-              <PiArrowFatUp className="text-2xl" />
-              <div className="total-votes px-2">
-                {!post.totalVotes ? 0 : post.totalVotes}
-              </div>
+              {hasUpvoted ? (
+                <PiArrowFatUpFill
+                  className="text-2xl"
+                  onClick={() => handleUpvote(post.postId)}
+                />
+              ) : (
+                <PiArrowFatUp
+                  className="text-2xl"
+                  onClick={() => handleUpvote(post.postId)}
+                />
+              )}
+              <div className="total-votes px-2">12</div>
               <PiArrowFatDown className="text-2xl" />
             </div>
             <div className="post-actions flex items-center">
