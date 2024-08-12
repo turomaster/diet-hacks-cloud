@@ -28,3 +28,10 @@ export type User = {
 };
 
 export type UserPost = Post & User;
+
+export type PostVotes = {
+  userId: number;
+  postId: number;
+  totalVotes: number;
+  voteType: string;
+};

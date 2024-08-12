@@ -74,7 +74,12 @@ export function App() {
             />
             <Route
               path={`/post/:postId`}
-              element={<Details isMobile={isMobile} categories={categories} />}
+              element={
+                <Details
+                  isMobile={isMobile}
+                  categories={categories}
+                />
+              }
             />
             <Route
               path="/sign-in"

@@ -10,8 +10,7 @@ type Props = {
 };
 
 export function Home({ isMobile, categories, error }: Props) {
-  const { posts, handleViews, handleUpvote, hasUpvoted } = usePosts();
-
+  const { posts, handleViews, handleUpvote } = usePosts();
   if (error || !posts) {
     return (
       <div>
@@ -35,7 +34,6 @@ export function Home({ isMobile, categories, error }: Props) {
             post={post}
             handleViews={() => handleViews(post)}
             handleUpvote={() => handleUpvote(post.postId)}
-            hasUpvoted={hasUpvoted}
           />
         ))}
         {!posts.length && (

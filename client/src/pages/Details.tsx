@@ -18,7 +18,7 @@ export function Details({ isMobile, categories }: Props) {
   const [comments, setComments] = useState<Comments[]>([]);
   const [replyToUser, setReplyToUser] = useState<string>();
   const { postId } = useParams();
-  const { posts, handleViews, handleUpvote, hasUpvoted } = usePosts();
+  const { posts, handleViews, handleUpvote } = usePosts();
   const { user, token } = useUser();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -105,7 +105,6 @@ export function Details({ isMobile, categories }: Props) {
                   post={post}
                   handleViews={() => handleViews(post)}
                   handleUpvote={() => handleUpvote(post.postId)}
-                  hasUpvoted={hasUpvoted}
                 />
               )
           )}

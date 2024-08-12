@@ -11,13 +11,13 @@
 --      ('Get a job', false);
 
 insert into "users" ("username", "hashedPassword", "role", "createdAt")
-values ('markm', 'password123', 'user', now());
+values ('markm', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', 'user', now());
 
 insert into "users" ("username", "hashedPassword", "role", "createdAt")
-values ('dirtbiker78', 'password123', 'user', now());
+values ('dirtbiker78', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', 'user', now());
 
 insert into "users" ("username", "hashedPassword", "role", "createdAt")
-values ('musicfan98', 'password123', 'user', now());
+values ('musicfan98', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', 'user', now());
 
 INSERT INTO "categories" ("name") VALUES ('Breakfast');
 INSERT INTO "categories" ("name") VALUES ('Dinner');
