@@ -45,7 +45,7 @@ INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views
 VALUES ('Sugar Free Cheesecake Pudding', 300, 'Sugar Free Jell-O Cheesecake Instant Pudding. 1 cup Fairlife 0% fat milk, 2/3 cup nonfat Greek yogurt. Mix with blender for 2 minutes. Let rise in fridge for 5 minutes. Top with berries and Reddi-wip.', 3, 3, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Mustard instead of other dressings', null, 'Mustard is zero calories. Mayo, ketchup, olive oil are all high calorie.', 3, 6, 0, now());
+VALUES ('Only use mustard for sauce', null, 'Mustard is zero calories. Mayo and ketchup are high calorie.', 3, 6, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
 VALUES ('Swerve sugar', null, 'Swerve is zero calories and measures just like sugar.', 3, 6, 0, now());
