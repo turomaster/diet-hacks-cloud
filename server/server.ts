@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- Remove when used */
 import 'dotenv/config';
 import express, { application } from 'express';
-import pg, { DatabaseError } from 'pg';
+import pg, { Client, DatabaseError } from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { authMiddleware, ClientError, errorMiddleware } from './lib/index.js';
-import { Category, Comment, Post, UserPost } from './lib/data.js';
+import { Category, Comment, Post, PostVotes, UserPost } from './lib/data.js';
 
 type User = {
   userId: number;
@@ -104,12 +104,12 @@ app.get('/api/posts', async (req, res, next) => {
              "postId",
              "role",
              "title",
-             "totalVotes",
              "userId",
              "username",
              "views"
         from "posts"
         join "users" using ("userId")
+        order by "postId" desc;
     `;
 
     const result = await db.query<UserPost[]>(sql);
@@ -139,27 +139,6 @@ app.get('/api/posts/:postId', async (req, res, next) => {
   }
 });
 
-app.get('/api/users/:userId', async (req, res, next) => {
-  try {
-    const { userId } = req.params;
-    if (!Number.isInteger(+userId))
-      throw new ClientError(400, `userId: ${userId} must be a number.`);
-    const sql = `
-      select *
-        from "posts"
-        join "users" on "posts"."userId" = "users"."userId"
-        where "users."userId" = $1;
-    `;
-    const params = [userId];
-    const result = await db.query<Post[]>(sql, params);
-    if (!result.rows[0])
-      throw new ClientError(404, `post with userId: ${userId} does not exist.`);
-    res.json(result.rows[0]);
-  } catch (err) {
-    next(err);
-  }
-});
-
 app.post('/api/posts', authMiddleware, async (req, res, next) => {
   try {
     const { title, categoryId, calories, body, userId } = req.body;
@@ -171,7 +150,7 @@ app.post('/api/posts', authMiddleware, async (req, res, next) => {
         values ($1, $2, $3, $4, $5)
         returning *;
     `;
-    const caloriesValue = calories || null; // if calories aren't entered, the post doesn't get made.
+    const caloriesValue = calories || null;
     const params = [title, categoryId, caloriesValue, body, userId];
     const result = await db.query<Post>(sql, params);
     res.status(201).json(result.rows[0]);
@@ -180,25 +159,19 @@ app.post('/api/posts', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
+app.put('/api/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId ${postId} must be a number.`);
-    const { title, calories, body, views } = req.body;
-    if (!title || !calories || !body) {
-      throw new ClientError(400, 'title, calories, and body is required.');
-    }
+    const { views } = req.body;
     const sql = `
       update "posts"
-        set "title" = $1,
-            "calories" = $2,
-            "body" = $3,
-            "views" = $4
-        where "postId" = $5
+        set "views" = $1
+        where "postId" = $2
         returning *;
     `;
-    const params = [title, calories, body, views, postId];
+    const params = [views, postId];
     const result = await db.query<Post>(sql, params);
     if (!result.rows[0])
       throw new ClientError(404, `Cannot find post with postId: ${postId}`);
@@ -208,7 +181,7 @@ app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.delete('/api/posts/:postId', async (req, res, next) => {
+app.delete('/api/posts/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
@@ -234,7 +207,6 @@ app.get('/api/comments/:postId', async (req, res, next) => {
     const sql = `
       select *
         from "comments"
-        join "users" using ("userId")
         where "postId" = $1;
     `;
     const params = [postId];
@@ -251,7 +223,8 @@ app.post('/api/comments/:postId', authMiddleware, async (req, res, next) => {
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
     const { content, userId, username } = req.body;
-    if (!content) throw new ClientError(400, 'content and userId is required');
+    if (!content || !userId || !username)
+      throw new ClientError(400, 'content and userId is required');
     const sql = `
       insert into "comments" ("content", "userId", "postId", "username")
         values ($1, $2, $3, $4)
@@ -316,10 +289,86 @@ app.get('/api/categories/trending', async (req, res, next) => {
     const sql = `
       select *
         from "posts"
-        order by "posts"."totalVotes" desc;
+        order by "posts"."views" desc;
     `;
     const result = await db.query<Post[]>(sql);
     res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/postVotes', async (req, res, next) => {
+  try {
+    const sql = `
+      select *
+        from "postVotes"
+      `;
+    const result = await db.query<PostVotes[]>(sql);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    if (!Number.isInteger(+postId))
+      throw new ClientError(400, `postId: ${postId} must be a number.`);
+    const { userId, voteType } = req.body;
+    if (!userId || !voteType)
+      throw new ClientError(400, 'userId and voteType are required.');
+    const sql = `
+      insert into "postVotes" ("postId", "userId", "voteType")
+        values ($1, $2, $3)
+        returning *;
+    `;
+    const params = [postId, userId, voteType];
+    const result = await db.query(sql, params);
+    res.json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    if (!Number.isInteger(+postId))
+      throw new ClientError(400, `postId must be a number`);
+    if (!req.user?.userId)
+      throw new ClientError(400, 'userId and voteType are required.');
+    const sql = `
+      select *
+        from "postVotes"
+        where "userId" = $1
+        and "postId" = $2;
+    `;
+
+    const params = [req.user.userId, postId];
+    const result = await db.query(sql, params);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    if (!Number.isInteger(+postId))
+      throw new ClientError(400, `postId: ${postId} must be a number.`);
+    if (!postId)
+      throw new ClientError(400, 'userId and voteType are required.');
+    const sql = `
+      delete from "postVotes"
+        where "postId" = $1
+        and "userId" = $2;
+    `;
+    const params = [postId, req.user?.userId];
+    const result = await db.query(sql, params);
+    res.json(result.rows[0]);
   } catch (err) {
     next(err);
   }

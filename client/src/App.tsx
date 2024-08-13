@@ -9,6 +9,7 @@ import { AuthPage } from './pages/AuthPage';
 import { UserProvider } from './components/UserContext';
 import { CreatePost } from './pages/CreatePost';
 import { PostsProvider } from './components/PostsContext';
+import { NotFound } from './pages/NotFound';
 
 export function App() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
@@ -74,7 +75,12 @@ export function App() {
             />
             <Route
               path={`/post/:postId`}
-              element={<Details isMobile={isMobile} categories={categories} />}
+              element={
+                <Details
+                  isMobile={isMobile}
+                  categories={categories}
+                />
+              }
             />
             <Route
               path="/sign-in"
@@ -90,6 +96,7 @@ export function App() {
                 <CreatePost isMobile={isMobile} categories={categories} />
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </PostsProvider>

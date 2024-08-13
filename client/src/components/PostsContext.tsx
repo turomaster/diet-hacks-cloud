@@ -10,28 +10,37 @@ export type Posts = {
   body: string;
   userId: number;
   categoryId: number;
-  totalVotes: number;
   views: number;
   createdAt: string;
+};
+
+export type PostVotes = {
+  userId: number;
+  postId: number;
+  voteType: string;
 };
 
 export type UserPost = Posts & User;
 
 export type PostsContextValues = {
   posts: UserPost[] | Posts[] | undefined;
+  postVotes: PostVotes[] | undefined;
   fetchPosts: () => void;
   handleViews: (post: Posts) => void;
   fetchCategoryName: (categoryName: string | null) => void;
   handleMenuClick: () => void;
+  handleUpvote: (postId: number) => void;
   isMenuVisible: boolean | undefined;
 };
 
 export const PostsContext = createContext<PostsContextValues>({
   posts: undefined,
+  postVotes: undefined,
   fetchPosts: () => undefined,
   handleViews: () => undefined,
   fetchCategoryName: () => undefined,
   handleMenuClick: () => undefined,
+  handleUpvote: () => undefined,
   isMenuVisible: undefined,
 });
 
@@ -41,10 +50,11 @@ type Props = {
 
 export function PostsProvider({ children }: Props) {
   const [posts, setPosts] = useState<UserPost[] | Posts[]>([]);
+  const [postVotes, setPostVotes] = useState<PostVotes[]>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
-  const { token } = useUser();
+  const { user, token } = useUser();
 
   useEffect(() => {
     async function loadPosts() {
@@ -56,6 +66,10 @@ export function PostsProvider({ children }: Props) {
       }
     }
     loadPosts();
+  }, []);
+
+  useEffect(() => {
+    checkUpvote();
   }, []);
 
   useEffect(() => {
@@ -71,6 +85,17 @@ export function PostsProvider({ children }: Props) {
     }
     loadPosts();
   }, [categoryName]);
+
+  async function checkUpvote() {
+    try {
+      const result = await fetch(`/api/postVotes`);
+      if (!result.ok) throw new Error('error');
+      const allPostVotes = (await result.json()) as PostVotes[];
+      setPostVotes(allPostVotes);
+    } catch (error) {
+      setError(error);
+    }
+  }
 
   async function fetchPosts() {
     try {
@@ -102,6 +127,71 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  async function handleUpvote(postId: number) {
+    try {
+      const data = await checkIfUpvoteExists(postId);
+      if (data) {
+        await removeUpvote(postId);
+        await checkUpvote();
+        return;
+      }
+      const newUpvote = {
+        userId: user?.userId,
+        postId: postId,
+        voteType: 'upvote',
+      };
+      const req = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUpvote),
+      };
+      const postResult = await fetch(`/api/postVotes/${postId}`, req);
+      if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
+      checkUpvote();
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  async function checkIfUpvoteExists(postId: number) {
+    try {
+      const req = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const getResult = await fetch(`/api/postVotes/${postId}`, req);
+      if (!getResult.ok) throw new Error(`fetch Error: ${getResult.status}`);
+      const data = (await getResult.json()) as PostVotes[];
+      if (data.length >= 1) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  async function removeUpvote(postId) {
+    try {
+      const req = {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const deleteResult = await fetch(`/api/postVotes/${postId}`, req);
+      if (!deleteResult.ok)
+        throw new Error(`fetch Error: ${deleteResult.status}`);
+    } catch (error) {
+      setError(error);
+    }
+  }
+
   function fetchCategoryName(categoryName: string | null) {
     setCategoryName(categoryName);
     setIsMenuVisible(false);
@@ -121,10 +211,12 @@ export function PostsProvider({ children }: Props) {
 
   const contextValue = {
     posts,
+    postVotes,
     fetchPosts,
     handleViews,
     fetchCategoryName,
     handleMenuClick,
+    handleUpvote,
     isMenuVisible,
   };
   return (

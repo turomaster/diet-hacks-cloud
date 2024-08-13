@@ -22,7 +22,6 @@ CREATE TABLE "posts" (
   "body" text,
   "userId" integer,
   "categoryId" integer,
-  "totalVotes" integer,
   "views" integer,
   "createdAt" timestamp NOT NULL DEFAULT (now())
 );
@@ -49,9 +48,8 @@ CREATE TABLE "commentVotes" (
 );
 
 CREATE TABLE "postVotes" (
-  "postVoteId" serial PRIMARY KEY,
-  "userId" integer,
-  "postId" integer,
+  "userId" integer ,
+  "postId" integer ,
   "voteType" text
 );
 
@@ -74,6 +72,8 @@ ALTER TABLE "comments" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 ALTER TABLE "commentVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
 ALTER TABLE "commentVotes" ADD FOREIGN KEY ("commentId") REFERENCES "comments" ("commentId");
+
+ALTER TABLE "postVotes" ADD PRIMARY KEY ("userId", "postId");
 
 ALTER TABLE "postVotes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 

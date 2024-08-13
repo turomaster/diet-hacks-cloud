@@ -68,6 +68,17 @@ export async function getCategories(): Promise<Category[]> {
 export async function getPostsByCategory(
   categoryName: string
 ): Promise<Posts[]> {
+  if (categoryName === 'trending') {
+    const response = await fetch('/api/posts', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    const data = (await response.json()) as Posts[];
+    const sortedData = data.sort((a, b) => b.views - a.views); // sort posts based on views in descending order
+    return sortedData;
+  }
   const response = await fetch(`/api/categories/${categoryName}`, {
     headers: {
       'Content-Type': 'application/json',
@@ -75,12 +86,7 @@ export async function getPostsByCategory(
   });
   if (!response.ok) throw new Error(`Response status: ${response.status}`);
   const data = (await response.json()) as Posts[];
-  if (categoryName === 'trending') {
-    const sortedData = data.sort((a, b) => b.views - a.views);
-    return sortedData;
-  } else {
-    return data;
-  }
+  return data;
 }
 
 export async function getComments(postId: number): Promise<Comments[]> {

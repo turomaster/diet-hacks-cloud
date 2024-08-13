@@ -32,9 +32,10 @@ export function Header({ isMobile, categories }: Props) {
   function handleSignInOrOut() {
     if (user) {
       handleSignOut();
-      fetchCategoryName(null);
+      handleMenuClick();
+      navigate('/sign-in');
     } else {
-      fetchCategoryName(null);
+      handleMenuClick();
       navigate('/sign-in');
     }
   }
@@ -108,7 +109,7 @@ export function Header({ isMobile, categories }: Props) {
               )}
               {user && (
                 <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                  <Link to="/" onClick={handleSignInOrOut}>
+                  <Link to="/sign-in" onClick={handleSignInOrOut}>
                     Sign Out
                   </Link>
                 </li>
@@ -118,7 +119,7 @@ export function Header({ isMobile, categories }: Props) {
         </DesktopMenu>
       )}
       {isMenuVisible && isMobile && (
-        <MobileMenu handleSignInOrOut={handleSignInOrOut} />
+        <MobileMenu onSignInOrOut={handleSignInOrOut} />
       )}
     </>
   );
