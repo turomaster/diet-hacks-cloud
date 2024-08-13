@@ -207,7 +207,8 @@ app.get('/api/comments/:postId', async (req, res, next) => {
     const sql = `
       select *
         from "comments"
-        where "postId" = $1;
+        where "postId" = $1
+        order by "createdAt" desc
     `;
     const params = [postId];
     const result = await db.query<Comment[]>(sql, params);
