@@ -159,33 +159,33 @@ app.post('/api/posts', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
-  try {
-    const { postId } = req.params;
-    if (!Number.isInteger(+postId))
-      throw new ClientError(400, `postId ${postId} must be a number.`);
-    const { title, calories, body, views } = req.body;
-    if (!title || !calories || !body) {
-      throw new ClientError(400, 'title, calories, and body is required.');
-    }
-    const sql = `
-      update "posts"
-        set "title" = $1,
-            "calories" = $2,
-            "body" = $3,
-            "views" = $4
-        where "postId" = $5
-        returning *;
-    `;
-    const params = [title, calories, body, views, postId];
-    const result = await db.query<Post>(sql, params);
-    if (!result.rows[0])
-      throw new ClientError(404, `Cannot find post with postId: ${postId}`);
-    res.json(result.rows[0]);
-  } catch (err) {
-    next(err);
-  }
-});
+// app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
+//   try {
+//     const { postId } = req.params;
+//     if (!Number.isInteger(+postId))
+//       throw new ClientError(400, `postId ${postId} must be a number.`);
+//     const { title, calories, body, views } = req.body;
+//     if (!title || !calories || !body) {
+//       throw new ClientError(400, 'title, calories, and body is required.');
+//     }
+//     const sql = `
+//       update "posts"
+//         set "title" = $1,
+//             "calories" = $2,
+//             "body" = $3,
+//             "views" = $4
+//         where "postId" = $5
+//         returning *;
+//     `;
+//     const params = [title, calories, body, views, postId];
+//     const result = await db.query<Post>(sql, params);
+//     if (!result.rows[0])
+//       throw new ClientError(404, `Cannot find post with postId: ${postId}`);
+//     res.json(result.rows[0]);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 app.delete('/api/posts/:postId', authMiddleware, async (req, res, next) => {
   try {
@@ -321,9 +321,13 @@ app.get('/api/postVotes', async (req, res, next) => {
 app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
+    console.log('postId', postId);
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
     const { userId, voteType, totalVotes } = req.body;
+    console.log('userId', userId);
+    console.log('voteType', voteType);
+    console.log('totalVotes', totalVotes);
     if (!userId || !voteType)
       throw new ClientError(400, 'userId and voteType are required.');
     const sql = `
@@ -333,6 +337,7 @@ app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
     `;
     const params = [postId, userId, voteType, totalVotes];
     const result = await db.query(sql, params);
+    console.log('result.rows', result.rows);
     res.json(result.rows[0]);
   } catch (err) {
     next(err);
@@ -377,6 +382,7 @@ app.get('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
 
     const params = [req.user.userId, postId];
     const result = await db.query(sql, params);
+    console.log('result.rows', result.rows);
     res.json(result.rows);
   } catch (err) {
     next(err);

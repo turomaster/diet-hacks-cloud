@@ -130,6 +130,7 @@ export function PostsProvider({ children }: Props) {
 
   async function handleUpvote(postId: number) {
     try {
+      debugger;
       const data = await checkIfUpvoteExists(postId);
       if (data) {
         removeUpvote(postId);
@@ -162,13 +163,17 @@ export function PostsProvider({ children }: Props) {
   async function checkIfUpvoteExists(postId: number) {
     try {
       const req = {
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      };
       const getResult = await fetch(`/api/postVotes/${postId}`, req);
+      console.log('getResult', getResult);
       if (!getResult.ok) throw new Error(`fetch Error: ${getResult.status}`);
       const data = (await getResult.json()) as PostVotes[];
+      console.log('data', data);
       if (data.length >= 1) {
         return true;
       } else {
