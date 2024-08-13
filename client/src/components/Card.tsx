@@ -21,14 +21,13 @@ export function Card({ post, handleViews, handleUpvote }: Props) {
   const result = postVotes?.find(
     (vote) => vote.postId === post.postId && user?.userId === vote.userId
   );
-  // const downvoteResult = postVotes?.find(
-  //   (vote) => vote.postId === post.postId && vote.voteType === 'downvote'
-  // );
+
   postVotes?.map((vote) => {
     if (vote.postId === post.postId && vote.voteType === 'upvote') {
       totalVotes++;
     }
   });
+  
   return (
     <div
       className="card flex flex-col shadow-md p-4 my-4"
@@ -56,18 +55,6 @@ export function Card({ post, handleViews, handleUpvote }: Props) {
               />
             )}
             <div className="total-votes px-2">{totalVotes}</div>
-            {/* {downvoteResult && (
-              <PiArrowFatDownFill
-                className="cursor-pointer text-2xl"
-                onClick={() => handleDownvote(post.postId)}
-              />
-            )}
-            {!downvoteResult && (
-              <PiArrowFatDown
-                className="cursor-pointer text-2xl"
-                onClick={() => handleDownvote(post.postId)}
-              />
-            )} */}
             <PiArrowFatDown className="cursor-pointer text-2xl" />
           </div>
         </div>

@@ -159,7 +159,7 @@ app.post('/api/posts', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
+app.put('/api/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
@@ -207,7 +207,6 @@ app.get('/api/comments/:postId', async (req, res, next) => {
     const sql = `
       select *
         from "comments"
-        join "users" using ("userId")
         where "postId" = $1;
     `;
     const params = [postId];
@@ -315,13 +314,9 @@ app.get('/api/postVotes', async (req, res, next) => {
 app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
-    console.log('postId', postId);
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
     const { userId, voteType, totalVotes } = req.body;
-    console.log('userId', userId);
-    console.log('voteType', voteType);
-    console.log('totalVotes', totalVotes);
     if (!userId || !voteType)
       throw new ClientError(400, 'userId and voteType are required.');
     const sql = `
@@ -331,34 +326,11 @@ app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
     `;
     const params = [postId, userId, voteType, totalVotes];
     const result = await db.query(sql, params);
-    console.log('result.rows', result.rows);
     res.json(result.rows[0]);
   } catch (err) {
     next(err);
   }
 });
-
-// app.get('/api/postVotes/:userId', authMiddleware, async (req, res, next) => {
-//   try {
-//     const { userId } = req.params;
-//     if (!Number.isInteger(+userId))
-//       throw new ClientError(400, `userId: ${userId} must be a number.`);
-//     if (!userId)
-//       throw new ClientError(400, 'userId and voteType are required.');
-//     const sql = `
-//       select *
-//         from "postVotes"
-//         where "userId" = $1;
-//     `;
-
-//     const params = [userId];
-//     const result = await db.query(sql, params);
-//     console.log('result', result.rows);
-//     res.json(result.rows);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 app.get('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
   try {
@@ -376,7 +348,6 @@ app.get('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
 
     const params = [req.user.userId, postId];
     const result = await db.query(sql, params);
-    console.log('result.rows', result.rows);
     res.json(result.rows);
   } catch (err) {
     next(err);
