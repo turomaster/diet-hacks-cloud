@@ -3,7 +3,9 @@ import { createPortal } from 'react-dom';
 import { usePosts } from './usePosts';
 
 type Props = {
-  position: HTMLDivElement | null;
+  position: {
+    top: number;
+  };
   children: ReactNode;
 };
 
@@ -11,7 +13,7 @@ export function DesktopMenu({ position, children }: Props) {
   const { isMenuVisible } = usePosts();
   if (!isMenuVisible || !position) return null;
 
-  const r = position.getBoundingClientRect();
+  const r = position;
   const top = r.top + 40;
   const right = 20;
 

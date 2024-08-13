@@ -92,7 +92,7 @@ export function PostsProvider({ children }: Props) {
   async function checkVote() {
     try {
       const result = await fetch(`/api/postVotes`);
-      if (!result.ok) throw new Error('error');
+      if (!result.ok) throw new Error(`fetch Error: ${result.status}`);
       const allPostVotes = (await result.json()) as PostVotes[];
       setPostVotes(allPostVotes);
     } catch (error) {
@@ -132,8 +132,8 @@ export function PostsProvider({ children }: Props) {
 
   async function handleUpvote(postId: number) {
     try {
-      const data = await checkIfVoteExists(postId);
-      if (data) {
+      const existingVote = await checkIfVoteExists(postId);
+      if (existingVote) {
         await removeVote(postId);
         await checkVote();
         return;
@@ -161,8 +161,8 @@ export function PostsProvider({ children }: Props) {
 
   async function handleDownvote(postId: number) {
     try {
-      const data = await checkIfVoteExists(postId);
-      if (data) {
+      const existingVote = await checkIfVoteExists(postId);
+      if (existingVote) {
         await removeVote(postId);
         await checkVote();
         return;

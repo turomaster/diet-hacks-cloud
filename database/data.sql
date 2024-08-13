@@ -30,6 +30,9 @@ INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views
 VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 4, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
+VALUES ('Magic Spoon Zero Sugar Cereal', 140, 'Only 140-170 calories. 4g net carbs and 13-14g protein.', 1, 1, 0, now());
+
+INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
 VALUES ('Orville Redenbacher''s Microwave Popcorn Smart Pop 94% Fat Free Butter', 240, 'This is the lowest calorie popcorn on the market.', 2, 4, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
