@@ -32,9 +32,10 @@ export function Header({ isMobile, categories }: Props) {
   function handleSignInOrOut() {
     if (user) {
       handleSignOut();
-      fetchCategoryName(null);
+      handleMenuClick();
+      navigate('/sign-in');
     } else {
-      fetchCategoryName(null);
+      handleMenuClick();
       navigate('/sign-in');
     }
   }

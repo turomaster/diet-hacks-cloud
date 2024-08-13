@@ -12,6 +12,7 @@ type Props = {
   post: UserPost;
   handleViews: (postId: number) => void;
   handleUpvote: (postId: number) => void;
+  handleDownvote: (postId: number) => void;
 };
 
 export function Card({ post, handleViews, handleUpvote }: Props) {
@@ -19,12 +20,17 @@ export function Card({ post, handleViews, handleUpvote }: Props) {
   const { user } = useUser();
   let totalVotes = 0;
 
-  const result = postVotes?.find((vote) => vote.postId === post.postId && user?.userId === vote.userId);
+  const result = postVotes?.find(
+    (vote) => vote.postId === post.postId && user?.userId === vote.userId
+  );
+  const downvoteResult = postVotes?.find(
+    (vote) => vote.postId === post.postId && vote.voteType === 'downvote'
+  );
   postVotes?.map((vote) => {
-    if (vote.postId === post.postId && vote.voteType === "upvote") {
+    if (vote.postId === post.postId && vote.voteType === 'upvote') {
       totalVotes++;
     }
-  })
+  });
   return (
     <div
       className="card flex flex-col shadow-md p-4 my-4"
@@ -39,23 +45,31 @@ export function Card({ post, handleViews, handleUpvote }: Props) {
       <div className="card-footer flex flex-wrap mt-4">
         <div className="flex basis-full justify-between">
           <div className="vote-actions flex items-center">
-            {result &&
-                    <PiArrowFatUpFill
-
-                      className="cursor-pointer text-2xl"
-                      onClick={() => handleUpvote(post.postId)}
-                    />
-            }
-            {
-              !result &&
-                    <PiArrowFatUp
-
-                      className="cursor-pointer text-2xl"
-                      onClick={() => handleUpvote(post.postId)}
-                    />
-            }
+            {result && (
+              <PiArrowFatUpFill
+                className="cursor-pointer text-2xl"
+                onClick={() => handleUpvote(post.postId)}
+              />
+            )}
+            {!result && (
+              <PiArrowFatUp
+                className="cursor-pointer text-2xl"
+                onClick={() => handleUpvote(post.postId)}
+              />
+            )}
             <div className="total-votes px-2">{totalVotes}</div>
-            <PiArrowFatDown className="cursor-pointer text-2xl" />
+            {downvoteResult && (
+              <PiArrowFatDownFill
+                className="cursor-pointer text-2xl"
+                onClick={() => handleDownvote(post.postId)}
+              />
+            )}
+            {!downvoteResult && (
+              <PiArrowFatDown
+                className="cursor-pointer text-2xl"
+                onClick={() => handleDownvote(post.postId)}
+              />
+            )}
           </div>
           <div className="post-actions flex items-center">
             <MdFavoriteBorder className="text-2xl mx-2" />

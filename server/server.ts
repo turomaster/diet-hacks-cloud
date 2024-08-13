@@ -187,7 +187,7 @@ app.put('/api/posts/:postId', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.delete('/api/posts/:postId', async (req, res, next) => {
+app.delete('/api/posts/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
@@ -310,15 +310,15 @@ app.get('/api/postVotes', async (req, res, next) => {
     const sql = `
       select *
         from "postVotes"
-      `
+      `;
     const result = await db.query<PostVotes[]>(sql);
     res.json(result.rows);
   } catch (err) {
     next(err);
   }
-})
+});
 
-app.post('/api/postVotes/:postId', async (req, res, next) => {
+app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
   try {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
