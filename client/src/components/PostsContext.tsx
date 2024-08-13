@@ -70,9 +70,9 @@ export function PostsProvider({ children }: Props) {
     loadPosts();
   }, []);
 
-    useEffect(() => {
-      checkUpvote();
-    }, []);
+  useEffect(() => {
+    checkUpvote();
+  }, []);
 
   useEffect(() => {
     async function loadPosts() {
@@ -130,7 +130,6 @@ export function PostsProvider({ children }: Props) {
 
   async function handleUpvote(postId: number) {
     try {
-      debugger;
       const data = await checkIfUpvoteExists(postId);
       if (data) {
         removeUpvote(postId);
@@ -152,8 +151,7 @@ export function PostsProvider({ children }: Props) {
         body: JSON.stringify(newUpvote),
       };
       const postResult = await fetch(`/api/postVotes/${postId}`, req);
-      if (!postResult.ok)
-        throw new Error(`fetch Error: ${postResult.status}`);
+      if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
       checkUpvote();
     } catch (error) {
       setError(error);
@@ -191,16 +189,15 @@ export function PostsProvider({ children }: Props) {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-        }
+        },
       };
       const deleteResult = await fetch(`/api/postVotes/${postId}`, req);
-          if (!deleteResult.ok)
-            throw new Error(`fetch Error: ${deleteResult.status}`);
+      if (!deleteResult.ok)
+        throw new Error(`fetch Error: ${deleteResult.status}`);
     } catch (error) {
       setError(error);
     }
   }
-
 
   function fetchCategoryName(categoryName: string | null) {
     setCategoryName(categoryName);
