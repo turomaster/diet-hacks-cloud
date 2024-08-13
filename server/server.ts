@@ -316,15 +316,15 @@ app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
     const { postId } = req.params;
     if (!Number.isInteger(+postId))
       throw new ClientError(400, `postId: ${postId} must be a number.`);
-    const { userId, voteType, totalVotes } = req.body;
+    const { userId, voteType } = req.body;
     if (!userId || !voteType)
       throw new ClientError(400, 'userId and voteType are required.');
     const sql = `
-      insert into "postVotes" ("postId", "userId", "voteType", "totalVotes")
-        values ($1, $2, $3, $4)
+      insert into "postVotes" ("postId", "userId", "voteType")
+        values ($1, $2, $3)
         returning *;
     `;
-    const params = [postId, userId, voteType, totalVotes];
+    const params = [postId, userId, voteType];
     const result = await db.query(sql, params);
     res.json(result.rows[0]);
   } catch (err) {

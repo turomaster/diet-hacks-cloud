@@ -15,10 +15,8 @@ export type Posts = {
 };
 
 export type PostVotes = {
-  voteTypeId: number;
   userId: number;
   postId: number;
-  totalVotes: number;
   voteType: string;
 };
 
@@ -91,6 +89,7 @@ export function PostsProvider({ children }: Props) {
   async function checkUpvote() {
     try {
       const result = await fetch(`/api/postVotes`);
+      if (!result.ok) throw new Error('error');
       const allPostVotes = (await result.json()) as PostVotes[];
       setPostVotes(allPostVotes);
     } catch (error) {
@@ -132,15 +131,14 @@ export function PostsProvider({ children }: Props) {
     try {
       const data = await checkIfUpvoteExists(postId);
       if (data) {
-        removeUpvote(postId);
-        checkUpvote();
+        await removeUpvote(postId);
+        await checkUpvote();
         return;
       }
       const newUpvote = {
         userId: user?.userId,
         postId: postId,
         voteType: 'upvote',
-        totalVotes: 1,
       };
       const req = {
         method: 'POST',

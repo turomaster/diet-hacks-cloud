@@ -119,7 +119,7 @@ export function Header({ isMobile, categories }: Props) {
         </DesktopMenu>
       )}
       {isMenuVisible && isMobile && (
-        <MobileMenu handleSignInOrOut={handleSignInOrOut} />
+        <MobileMenu onSignInOrOut={handleSignInOrOut} />
       )}
     </>
   );

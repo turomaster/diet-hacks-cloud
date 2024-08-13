@@ -1,7 +1,6 @@
 import { PiArrowFatUp } from 'react-icons/pi';
 import { PiArrowFatUpFill } from 'react-icons/pi';
 import { PiArrowFatDown } from 'react-icons/pi';
-import { PiArrowFatDownFill } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
 import { usePosts } from './usePosts';
 import { useUser } from './useUser';
@@ -9,12 +8,10 @@ import { UserPost } from './PostsContext';
 
 type Props = {
   post: UserPost;
-  handleViews: (postId: number) => void;
-  handleUpvote: (postId: number) => void;
 };
 
-export function Card({ post, handleViews, handleUpvote }: Props) {
-  const { postVotes } = usePosts();
+export function Card({ post }: Props) {
+  const { postVotes, handleViews, handleUpvote } = usePosts();
   const { user } = useUser();
   let totalVotes = 0;
 
@@ -27,11 +24,11 @@ export function Card({ post, handleViews, handleUpvote }: Props) {
       totalVotes++;
     }
   });
-  
+
   return (
     <div
       className="card flex flex-col shadow-md p-4 my-4"
-      onClick={() => handleViews(post.postId)}>
+      onClick={() => handleViews(post)}>
       <Link to={`/post/${post.postId}`}>
         <div className="card-title font-bold">{post.title}</div>
         <div className="card-calories text-gray-400 py-2 min-h-10">

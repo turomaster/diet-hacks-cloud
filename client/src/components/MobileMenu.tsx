@@ -6,10 +6,10 @@ import { useUser } from './useUser';
 import { usePosts } from './usePosts';
 
 type Props = {
-  handleSignInOrOut: () => void;
+  onSignInOrOut: () => void;
 };
 
-export function MobileMenu({ handleSignInOrOut }: Props) {
+export function MobileMenu({ onSignInOrOut }: Props) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<unknown>();
@@ -72,12 +72,12 @@ export function MobileMenu({ handleSignInOrOut }: Props) {
           {!user && (
             <>
               <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-                <Link to="/sign-in" onClick={handleSignInOrOut}>
+                <Link to="/sign-in" onClick={onSignInOrOut}>
                   Sign In
                 </Link>
               </li>
               <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-                <Link to="/sign-up" onClick={handleSignInOrOut}>
+                <Link to="/sign-up" onClick={onSignInOrOut}>
                   Register
                 </Link>
               </li>
@@ -91,7 +91,7 @@ export function MobileMenu({ handleSignInOrOut }: Props) {
                 </Link>
               </li>
               <li className="rounded-lg mx-4 mb-4 mt-2 bg-accent-gray w-80">
-                <Link to="/" onClick={handleSignInOrOut}>
+                <Link to="/" onClick={onSignInOrOut}>
                   Sign Out
                 </Link>
               </li>

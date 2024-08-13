@@ -5,7 +5,6 @@ export type Post = {
   body: string;
   userId: number;
   categoryId: number;
-  totalVotes: number;
   views: number;
 };
 
@@ -32,6 +31,5 @@ export type UserPost = Post & User;
 export type PostVotes = {
   userId: number;
   postId: number;
-  totalVotes: number;
   voteType: string;
 };

@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function Home({ isMobile, categories, error }: Props) {
-  const { posts, handleViews, handleUpvote } = usePosts();
+  const { posts } = usePosts();
   if (error || !posts) {
     return (
       <div>
@@ -29,12 +29,7 @@ export function Home({ isMobile, categories, error }: Props) {
           isMobile ? 'basis-full px-8 mt-12' : 'basis-full ml-52 mt-12 px-8'
         }>
         {posts.map((post) => (
-          <Card
-            key={post.postId}
-            post={post}
-            handleViews={() => handleViews(post)}
-            handleUpvote={() => handleUpvote(post.postId)}
-          />
+          <Card key={post.postId} post={post} />
         ))}
         {!posts.length && (
           <div className="flex justify-center mt-2">
