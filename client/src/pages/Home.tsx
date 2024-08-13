@@ -34,7 +34,6 @@ export function Home({ isMobile, categories, error }: Props) {
             post={post}
             handleViews={() => handleViews(post)}
             handleUpvote={() => handleUpvote(post.postId)}
-            handleDownvote={() => handleDownvote(post.postId)}
           />
         ))}
         {!posts.length && (

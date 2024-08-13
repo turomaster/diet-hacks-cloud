@@ -30,25 +30,28 @@ INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views
 VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 1, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Jersey Mike''s Turkey Provolone Tub', 550, 'Order Mike''s Way, no olive oil or mayo. Red wine vinegar is ok.', 2, 2, 0, now());
+VALUES ('Orville Redenbacher''s Microwave Popcorn Smart Pop 94% Fat Free Butter', 240, 'This is the lowest calorie popcorn on the market.', 1, 1, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Sugar Free Cheesecake Pudding', 400, 'Sugar free jello cheesecake pudding. 1 cup Fairlife 0% fat milk, 2/3 cup nonfat Greek yogurt. Sugar free Reddi-wip.', 3, 3, 0, now());
+VALUES ('Chick-fil-A Market Salad & Grilled Nuggets ', 730, 'Only salad with no chicken, no toppings, and fat-free honey mustard. Order 12 count of grilled nuggets on the side.', 1, 5, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Keto-Friendly Chicken Salad', 350, 'Grilled chicken breast, mixed greens, avocado, and a light vinaigrette.', 1, 4, 0, now());
+VALUES ('Jersey Mike''s Turkey Provolone Bowl', 420, 'Order Mike''s Way, no olive oil. Red wine vinegar is ok. Add extra meat & cheese. If you need crunch you can order chips and add to salad (+240 calories)', 2, 5, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Veggie Power Bowl', 420, 'Quinoa, black beans, roasted veggies, and a sprinkle of feta.', 2, 5, 0, now());
+VALUES ('Sugar Free Cheesecake Pudding', 300, 'Sugar Free Jell-O Cheesecake Instant Pudding. 1 cup Fairlife 0% fat milk, 2/3 cup nonfat Greek yogurt. Mix with blender for 2 minutes. Let rise in fridge for 5 minutes. Top with berries and Reddi-wip.', 3, 3, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Protein-Packed Smoothie', 300, 'Almond milk, protein powder, spinach, and a handful of berries.', 3, 3, 0, now());
+VALUES ('Mustard instead of other dressings', null, 'Mustard is zero calories. Mayo, ketchup, olive oil are all high calorie.', 3, 6, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Low-Carb Egg Muffins', 250, 'Eggs, spinach, and cheese baked into a convenient muffin form.', 1, 1, 0, now());
+VALUES ('Swerve sugar', null, 'Swerve is zero calories and measures just like sugar.', 3, 6, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Cauliflower Rice Stir-Fry', 200, 'Stir-fried cauliflower rice with veggies and tofu.', 2, 4, 0, now());
+VALUES ('Spray cooking oil', null, 'Cooking with spray cooking oil has less calories as opposed to butter or non-spray olive oil.', 3, 6, 0, now());
+
+INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
+VALUES ('Any fruit ending with berry', null, 'Any fruit ending with "berry" will have significantly less calories and sugar.', 3, 6, 0, now());
 
 INSERT INTO "comments" ("postId", "username", "content")
 VALUES (1, 'musicfan98', 'Wow! Great tip!');
