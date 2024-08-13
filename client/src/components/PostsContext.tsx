@@ -30,6 +30,7 @@ export type PostsContextValues = {
   fetchCategoryName: (categoryName: string | null) => void;
   handleMenuClick: () => void;
   handleUpvote: (postId: number) => void;
+  handleDownvote: (postId: number) => void;
   isMenuVisible: boolean | undefined;
 };
 
@@ -41,6 +42,7 @@ export const PostsContext = createContext<PostsContextValues>({
   fetchCategoryName: () => undefined,
   handleMenuClick: () => undefined,
   handleUpvote: () => undefined,
+  handleDownvote: () => undefined,
   isMenuVisible: undefined,
 });
 
@@ -69,7 +71,7 @@ export function PostsProvider({ children }: Props) {
   }, []);
 
   useEffect(() => {
-    checkUpvote();
+    checkVote();
   }, []);
 
   useEffect(() => {
@@ -86,7 +88,8 @@ export function PostsProvider({ children }: Props) {
     loadPosts();
   }, [categoryName]);
 
-  async function checkUpvote() {
+  // Get votes for all posts and updates state postVotes
+  async function checkVote() {
     try {
       const result = await fetch(`/api/postVotes`);
       if (!result.ok) throw new Error('error');
@@ -129,10 +132,10 @@ export function PostsProvider({ children }: Props) {
 
   async function handleUpvote(postId: number) {
     try {
-      const data = await checkIfUpvoteExists(postId);
+      const data = await checkIfVoteExists(postId);
       if (data) {
-        await removeUpvote(postId);
-        await checkUpvote();
+        await removeVote(postId);
+        await checkVote();
         return;
       }
       const newUpvote = {
@@ -150,13 +153,42 @@ export function PostsProvider({ children }: Props) {
       };
       const postResult = await fetch(`/api/postVotes/${postId}`, req);
       if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
-      checkUpvote();
+      checkVote();
     } catch (error) {
       setError(error);
     }
   }
 
-  async function checkIfUpvoteExists(postId: number) {
+  async function handleDownvote(postId: number) {
+    try {
+      const data = await checkIfVoteExists(postId);
+      if (data) {
+        await removeVote(postId);
+        await checkVote();
+        return;
+      }
+      const newDownvote = {
+        userId: user?.userId,
+        postId: postId,
+        voteType: 'downvote',
+      };
+      const req = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newDownvote),
+      };
+      const postResult = await fetch(`/api/postVotes/${postId}`, req);
+      if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
+      checkVote();
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  async function checkIfVoteExists(postId: number) {
     try {
       const req = {
         headers: {
@@ -176,7 +208,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
-  async function removeUpvote(postId) {
+  async function removeVote(postId) {
     try {
       const req = {
         method: 'DELETE',
@@ -217,6 +249,7 @@ export function PostsProvider({ children }: Props) {
     fetchCategoryName,
     handleMenuClick,
     handleUpvote,
+    handleDownvote,
     isMenuVisible,
   };
   return (
