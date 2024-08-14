@@ -225,7 +225,7 @@ app.post('/api/comments/:postId', authMiddleware, async (req, res, next) => {
       throw new ClientError(400, `postId: ${postId} must be a number.`);
     const { content, userId, username } = req.body;
     if (!content || !userId || !username)
-      throw new ClientError(400, 'content and userId is required');
+      throw new ClientError(400, 'content, userId and username is required');
     const sql = `
       insert into "comments" ("content", "userId", "postId", "username")
         values ($1, $2, $3, $4)

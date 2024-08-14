@@ -27,6 +27,18 @@ INSERT INTO "categories" ("name") VALUES ('Fast Food');
 INSERT INTO "categories" ("name") VALUES ('Ingredient Swaps');
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
+VALUES ('Only use mustard for sauce', null, 'Mustard is zero calories. Mayo and ketchup are both high calorie.', 3, 6, 0, now());
+
+INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
+VALUES ('Swerve sugar', null, 'Swerve is zero calories and measures just like sugar.', 3, 6, 0, now());
+
+INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
+VALUES ('Only use spray cooking oil', null, 'Cooking with spray cooking oil has less calories as opposed to butter or non-spray olive oil.', 3, 6, 0, now());
+
+INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
+VALUES ('Only eat fruit ending with berry', null, 'Any fruit ending with berry will have less calories and sugar.', 3, 6, 0, now());
+
+INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
 VALUES ('Chomp''s Zero Sugar Beef Stick', 100, 'Only 100 calories, zero sugar and 10G of protein.', 1, 4, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
@@ -45,16 +57,13 @@ INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views
 VALUES ('Sugar Free Cheesecake Pudding', 300, 'Sugar Free Jell-O Cheesecake Instant Pudding. 1 cup Fairlife 0% fat milk, 2/3 cup nonfat Greek yogurt. Mix with blender for 2 minutes. Let rise in fridge for 5 minutes. Top with berries and Reddi-wip.', 3, 3, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Only use mustard for sauce', null, 'Mustard is zero calories. Mayo and ketchup are high calorie.', 3, 6, 0, now());
+VALUES ('Yasso Greek Yogurt Bars', 100, 'Only 100 calories and 4g protein.', 3, 3, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Swerve sugar', null, 'Swerve is zero calories and measures just like sugar.', 3, 6, 0, now());
+VALUES ('Sugar Free Gum', 5, 'Only 5 calories and helps keep your mind off being hungry.', 1, 3, 0, now());
 
 INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Spray cooking oil', null, 'Cooking with spray cooking oil has less calories as opposed to butter or non-spray olive oil.', 3, 6, 0, now());
-
-INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views", "createdAt")
-VALUES ('Any fruit ending with berry', null, 'Any fruit ending with "berry" will have significantly less calories and sugar.', 3, 6, 0, now());
+VALUES ('Cucumber With Tajin', null, 'Slice cucumbers in half and then sprinkle Tajin spice to add flavor.', 1, 4, 0, now());
 
 INSERT INTO "comments" ("postId", "username", "content")
 VALUES (1, 'musicfan98', 'Wow! Great tip!');

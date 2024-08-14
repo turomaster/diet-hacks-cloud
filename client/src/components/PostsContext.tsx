@@ -109,6 +109,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  // Increase view count when post is clicked on, send PUT request with new view count
   async function handleViews(post: Posts) {
     try {
       const updatedPost = {
@@ -188,6 +189,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  // Check if one or more postId's in the postVotes table exists, if so return true
   async function checkIfVoteExists(postId: number) {
     try {
       const req = {
@@ -208,7 +210,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
-  async function removeVote(postId) {
+  async function removeVote(postId: number) {
     try {
       const req = {
         method: 'DELETE',
