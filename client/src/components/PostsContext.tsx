@@ -133,6 +133,10 @@ export function PostsProvider({ children }: Props) {
 
   async function handleUpvote(postId: number) {
     try {
+      if (!user) {
+        alert('You must be logged in to vote.');
+        return;
+      }
       const existingVote = await checkIfVoteExists(postId);
       if (existingVote) {
         await removeVote(postId);
@@ -162,6 +166,10 @@ export function PostsProvider({ children }: Props) {
 
   async function handleDownvote(postId: number) {
     try {
+      if (!user) {
+        alert('You must be logged in to vote.');
+        return;
+      }
       const existingVote = await checkIfVoteExists(postId);
       if (existingVote) {
         await removeVote(postId);

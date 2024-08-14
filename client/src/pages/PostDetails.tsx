@@ -44,6 +44,10 @@ export function PostDetails({ isMobile, categories }: Props) {
   }, [replyToUser]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    if (!user) {
+      alert('You must be logged in to do that.');
+      return;
+    }
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget);
