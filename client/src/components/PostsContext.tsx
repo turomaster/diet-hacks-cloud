@@ -88,11 +88,11 @@ export function PostsProvider({ children }: Props) {
     loadPosts();
   }, [categoryName]);
 
-  // Get votes for all posts and updates state postVotes
+  // Get votes for all posts and updates state
   async function checkVote() {
     try {
       const result = await fetch(`/api/postVotes`);
-      if (!result.ok) throw new Error('error');
+      if (!result.ok) throw new Error(`fetch Error: ${result.status}`);
       const allPostVotes = (await result.json()) as PostVotes[];
       setPostVotes(allPostVotes);
     } catch (error) {
@@ -109,6 +109,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  // Increase view count when post is clicked on, send PUT request to update view count
   async function handleViews(post: Posts) {
     try {
       const updatedPost = {
@@ -132,8 +133,8 @@ export function PostsProvider({ children }: Props) {
 
   async function handleUpvote(postId: number) {
     try {
-      const data = await checkIfVoteExists(postId);
-      if (data) {
+      const existingVote = await checkIfVoteExists(postId);
+      if (existingVote) {
         await removeVote(postId);
         await checkVote();
         return;
@@ -161,8 +162,8 @@ export function PostsProvider({ children }: Props) {
 
   async function handleDownvote(postId: number) {
     try {
-      const data = await checkIfVoteExists(postId);
-      if (data) {
+      const existingVote = await checkIfVoteExists(postId);
+      if (existingVote) {
         await removeVote(postId);
         await checkVote();
         return;
@@ -188,17 +189,16 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
+  // Check if one or more postId's in the postVotes table exists, if so return true
   async function checkIfVoteExists(postId: number) {
     try {
-      const req = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const getResult = await fetch(`/api/postVotes/${postId}`, req);
-      if (!getResult.ok) throw new Error(`fetch Error: ${getResult.status}`);
-      const data = (await getResult.json()) as PostVotes[];
-      if (data.length >= 1) {
+      const totalVotes: PostVotes[] = [];
+      postVotes.forEach((vote) => {
+        if (vote.postId === postId) {
+          totalVotes.push(vote);
+        }
+      });
+      if (totalVotes.length >= 1) {
         return true;
       } else {
         return false;
@@ -208,7 +208,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
-  async function removeVote(postId) {
+  async function removeVote(postId: number) {
     try {
       const req = {
         method: 'DELETE',

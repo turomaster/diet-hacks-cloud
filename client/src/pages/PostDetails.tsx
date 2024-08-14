@@ -2,8 +2,6 @@ import { useParams } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { Category, Comments, getComments } from '../lib/data';
 import { NavBar } from '../components/NavBar';
-import { SlLike } from 'react-icons/sl';
-import { SlDislike } from 'react-icons/sl';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { usePosts } from '../components/usePosts';
 import { useUser } from '../components/useUser';
@@ -13,7 +11,7 @@ type Props = {
   categories: Category[];
 };
 
-export function Details({ isMobile, categories }: Props) {
+export function PostDetails({ isMobile, categories }: Props) {
   const [error, setError] = useState<unknown>();
   const [comments, setComments] = useState<Comments[]>([]);
   const [replyToUser, setReplyToUser] = useState<string>();
@@ -126,9 +124,6 @@ export function Details({ isMobile, categories }: Props) {
                 <span>@{comment.username}</span>
                 <li>{comment.content}</li>
                 <div className="flex items-center mb-2">
-                  <SlLike className="mr-2" />
-                  <div className="flex min-w-6">12</div>
-                  <SlDislike className="mr-2" />
                   <button onClick={() => handleReplyClick(comment.username)}>
                     Reply
                   </button>

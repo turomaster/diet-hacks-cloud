@@ -2,7 +2,7 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { MobileMenu } from './MobileMenu';
 import { DesktopMenu } from './DesktopMenu';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { Category } from '../lib/data';
 import { useUser } from './useUser';
@@ -16,10 +16,26 @@ type Props = {
 
 export function Header({ isMobile, categories }: Props) {
   const [open, setOpen] = useState<boolean>(false);
-  const { user, handleSignOut } = useUser();
-  const menu = useRef<HTMLDivElement>(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0 });
   const { fetchCategoryName, handleMenuClick, isMenuVisible } = usePosts();
+  const { user, handleSignOut } = useUser();
   const navigate = useNavigate();
+  const menu = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (menu.current) {
+        const rect = menu.current.getBoundingClientRect();
+        setMenuPosition({
+          top: rect.top + window.scrollY,
+        });
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   function handleClick() {
     if (open) {
@@ -29,7 +45,7 @@ export function Header({ isMobile, categories }: Props) {
     }
   }
 
-  function handleSignInOrOut() {
+  function onSignInOrOut() {
     if (user) {
       handleSignOut();
       handleMenuClick();
@@ -60,7 +76,7 @@ export function Header({ isMobile, categories }: Props) {
       </header>
       <Outlet />
       {!isMobile && (
-        <DesktopMenu position={menu.current}>
+        <DesktopMenu position={menuPosition}>
           <nav>
             <ul className="flex flex-col items-center bg-accent-gray border-2 rounded-lg">
               <li className="flex justify-center rounded-lg  hover:bg-gray-200 mt-2 w-56">
@@ -95,21 +111,21 @@ export function Header({ isMobile, categories }: Props) {
               )}
               {!user && (
                 <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                  <Link to="/sign-in" onClick={handleSignInOrOut}>
+                  <Link to="/sign-in" onClick={onSignInOrOut}>
                     Sign In
                   </Link>
                 </li>
               )}
               {!user && (
                 <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                  <Link to="/sign-up" onClick={handleSignInOrOut}>
+                  <Link to="/sign-up" onClick={onSignInOrOut}>
                     Register
                   </Link>
                 </li>
               )}
               {user && (
                 <li className="flex justify-center flex-col items-center rounded-lg  hover:bg-gray-200 mt-2 mb-2 w-56">
-                  <Link to="/sign-in" onClick={handleSignInOrOut}>
+                  <Link to="/sign-in" onClick={onSignInOrOut}>
                     Sign Out
                   </Link>
                 </li>
@@ -119,7 +135,7 @@ export function Header({ isMobile, categories }: Props) {
         </DesktopMenu>
       )}
       {isMenuVisible && isMobile && (
-        <MobileMenu onSignInOrOut={handleSignInOrOut} />
+        <MobileMenu onSignInOrOut={onSignInOrOut} />
       )}
     </>
   );

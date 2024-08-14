@@ -29,11 +29,11 @@ export function Card({ post }: Props) {
       vote.voteType === 'downvote'
   );
 
-  postVotes?.map((vote) => {
+  postVotes?.forEach((vote) => {
     if (vote.postId === post.postId) {
       if (vote.voteType === 'upvote') {
         totalVotes++;
-      } else if (vote.voteType === 'downvote' && totalVotes > 0) {
+      } else if (vote.voteType === 'downvote') {
         totalVotes--;
       }
     }
