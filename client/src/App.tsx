@@ -4,7 +4,7 @@ import './App.css';
 import { Home } from './pages/Home';
 import { Route, Routes } from 'react-router-dom';
 import { Category, getCategories } from './lib/data';
-import { Details } from './pages/PostDetails';
+import { PostDetails } from './pages/PostDetails';
 import { AuthPage } from './pages/AuthPage';
 import { UserProvider } from './components/UserContext';
 import { CreatePost } from './pages/CreatePost';
@@ -75,7 +75,9 @@ export function App() {
             />
             <Route
               path={`/post/:postId`}
-              element={<Details isMobile={isMobile} categories={categories} />}
+              element={
+                <PostDetails isMobile={isMobile} categories={categories} />
+              }
             />
             <Route
               path="/sign-in"

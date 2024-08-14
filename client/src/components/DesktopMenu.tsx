@@ -21,7 +21,7 @@ export function DesktopMenu({ position, children }: Props) {
     <>
       <div
         style={{ position: 'absolute', top: `${top}px`, right: `${right}px` }}
-        className="w-72 ">
+        className="w-72">
         {children}
       </div>
     </>,

@@ -33,7 +33,7 @@ export function Card({ post }: Props) {
     if (vote.postId === post.postId) {
       if (vote.voteType === 'upvote') {
         totalVotes++;
-      } else if (vote.voteType === 'downvote' && totalVotes > 0) {
+      } else if (vote.voteType === 'downvote') {
         totalVotes--;
       }
     }

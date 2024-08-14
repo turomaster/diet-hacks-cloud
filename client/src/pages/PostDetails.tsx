@@ -11,7 +11,7 @@ type Props = {
   categories: Category[];
 };
 
-export function Details({ isMobile, categories }: Props) {
+export function PostDetails({ isMobile, categories }: Props) {
   const [error, setError] = useState<unknown>();
   const [comments, setComments] = useState<Comments[]>([]);
   const [replyToUser, setReplyToUser] = useState<string>();
