@@ -16,6 +16,7 @@ export function PostForm({ categories, isMobile }: Props) {
 
   useEffect(() => {
     if (!user) {
+      alert('You must be logged in to create a post.');
       navigate('/');
     }
   }, [user, navigate]);
