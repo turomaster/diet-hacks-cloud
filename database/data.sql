@@ -7,15 +7,6 @@ values ('dirtbiker78', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$Sa
 insert into "users" ("username", "hashedPassword", "createdAt")
 values ('musicfan98', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
 
-insert into "users" ("username", "hashedPassword", "createdAt")
-values ('theblackkeys', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
-
-insert into "users" ("username", "hashedPassword", "createdAt")
-values ('pickleballfan', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
-
-insert into "users" ("username", "hashedPassword", "createdAt")
-values ('shmiski', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
-
 INSERT INTO "categories" ("name") VALUES ('Breakfast');
 INSERT INTO "categories" ("name") VALUES ('Dinner');
 INSERT INTO "categories" ("name") VALUES ('Dessert');
