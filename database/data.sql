@@ -1,15 +1,3 @@
--- Use SQL insert statements to add any
--- starting/dummy data to your database tables
-
--- EXAMPLE:
-
---  insert into "todos"
---    ("task", "isCompleted")
---    values
---      ('Learn to code', false),
---      ('Build projects', false),
---      ('Get a job', false);
-
 insert into "users" ("username", "hashedPassword", "createdAt")
 values ('markm', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
 
@@ -18,6 +6,15 @@ values ('dirtbiker78', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$Sa
 
 insert into "users" ("username", "hashedPassword", "createdAt")
 values ('musicfan98', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
+
+insert into "users" ("username", "hashedPassword", "createdAt")
+values ('theblackkeys', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
+
+insert into "users" ("username", "hashedPassword", "createdAt")
+values ('pickleballfan', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
+
+insert into "users" ("username", "hashedPassword", "createdAt")
+values ('shmiski', '$argon2id$v=19$m=65536,t=3,p=4$drFfrBXQox0Va1L2zmxD1w$SanvtYoY0Wr3y15EAsgI8qh++81a2/K3qA6Zm8DNDro', now());
 
 INSERT INTO "categories" ("name") VALUES ('Breakfast');
 INSERT INTO "categories" ("name") VALUES ('Dinner');
@@ -91,10 +88,19 @@ INSERT INTO "posts" ("title", "calories", "body", "userId", "categoryId", "views
 VALUES ('Sugar Free Cheesecake Pudding', 300, 'Sugar Free Jell-O Cheesecake Instant Pudding. 1 cup Fairlife 0% fat milk, 2/3 cup nonfat Greek yogurt. Mix with blender for 2 minutes. Let rise in fridge for 5 minutes. Top with berries and Reddi-wip.', 3, 3, 0, now());
 
 INSERT INTO "postVotes" ("userId", "postId", "voteType")
-VALUES (1, 17, 'upvote');
+VALUES (4, 19, 'downvote');
 
 INSERT INTO "postVotes" ("userId", "postId", "voteType")
-VALUES (2, 17, 'upvote');
+VALUES (4, 20, 'upvote');
 
 INSERT INTO "postVotes" ("userId", "postId", "voteType")
-VALUES (3, 17, 'upvote');
+VALUES (5, 20, 'upvote');
+
+INSERT INTO "postVotes" ("userId", "postId", "voteType")
+VALUES (4, 21, 'upvote');
+
+INSERT INTO "postVotes" ("userId", "postId", "voteType")
+VALUES (5, 21, 'upvote');
+
+INSERT INTO "postVotes" ("userId", "postId", "voteType")
+VALUES (6, 21, 'upvote');

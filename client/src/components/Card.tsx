@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function Card({ post }: Props) {
-  const { postVotes, handleViews, handleUpvote, handleDownvote } = usePosts();
+  const { postVotes, handleViews, handleVote } = usePosts();
   const { user } = useUser();
   let totalVotes = 0;
 
@@ -56,26 +56,26 @@ export function Card({ post }: Props) {
             {upvoteResult && (
               <PiArrowFatUpFill
                 className="cursor-pointer text-2xl"
-                onClick={() => handleUpvote(post.postId)}
+                onClick={() => handleVote(post.postId, 'upvote')}
               />
             )}
             {!upvoteResult && (
               <PiArrowFatUp
                 className="cursor-pointer text-2xl"
-                onClick={() => handleUpvote(post.postId)}
+                onClick={() => handleVote(post.postId, 'upvote')}
               />
             )}
             <div className="total-votes px-2">{totalVotes}</div>
             {downvoteResult && (
               <PiArrowFatDownFill
                 className="cursor-pointer text-2xl"
-                onClick={() => handleDownvote(post.postId)}
+                onClick={() => handleVote(post.postId, 'downvote')}
               />
             )}
             {!downvoteResult && (
               <PiArrowFatDown
                 className="cursor-pointer text-2xl"
-                onClick={() => handleDownvote(post.postId)}
+                onClick={() => handleVote(post.postId, 'downvote')}
               />
             )}
           </div>

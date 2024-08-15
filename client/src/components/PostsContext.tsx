@@ -29,8 +29,7 @@ export type PostsContextValues = {
   handleViews: (post: Posts) => void;
   fetchCategoryName: (categoryName: string | null) => void;
   handleMenuClick: () => void;
-  handleUpvote: (postId: number) => void;
-  handleDownvote: (postId: number) => void;
+  handleVote: (postId: number, voteType: string) => void;
   isMenuVisible: boolean | undefined;
 };
 
@@ -41,8 +40,7 @@ export const PostsContext = createContext<PostsContextValues>({
   handleViews: () => undefined,
   fetchCategoryName: () => undefined,
   handleMenuClick: () => undefined,
-  handleUpvote: () => undefined,
-  handleDownvote: () => undefined,
+  handleVote: () => undefined,
   isMenuVisible: undefined,
 });
 
@@ -131,7 +129,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
-  async function handleUpvote(postId: number) {
+  async function handleVote(postId: number, voteType: string) {
     try {
       if (!user) {
         alert('You must be logged in to vote.');
@@ -139,14 +137,14 @@ export function PostsProvider({ children }: Props) {
       }
       const existingVote = await checkIfVoteExists(postId);
       if (existingVote) {
-        const removeResult = await removeVote(postId);
-        setPostVotes(removeResult);
+        const result = await removeVote(postId);
+        setPostVotes(result);
         return;
       }
-      const newUpvote = {
+      const newVote = {
         userId: user?.userId,
         postId: postId,
-        voteType: 'upvote',
+        voteType: voteType === 'upvote' ? 'upvote' : 'downvote',
       };
       const req = {
         method: 'POST',
@@ -154,41 +152,7 @@ export function PostsProvider({ children }: Props) {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUpvote),
-      };
-      const postResult = await fetch(`/api/postVotes/${postId}`, req);
-      if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
-      const allPostVotes = (await postResult.json()) as PostVotes[];
-      setPostVotes(allPostVotes);
-    } catch (error) {
-      setError(error);
-    }
-  }
-
-  async function handleDownvote(postId: number) {
-    try {
-      if (!user) {
-        alert('You must be logged in to vote.');
-        return;
-      }
-      const existingVote = await checkIfVoteExists(postId);
-      if (existingVote) {
-        const removeResult = await removeVote(postId);
-        setPostVotes(removeResult);
-        return;
-      }
-      const newDownvote = {
-        userId: user?.userId,
-        postId: postId,
-        voteType: 'downvote',
-      };
-      const req = {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newDownvote),
+        body: JSON.stringify(newVote),
       };
       const postResult = await fetch(`/api/postVotes/${postId}`, req);
       if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
@@ -259,8 +223,7 @@ export function PostsProvider({ children }: Props) {
     handleViews,
     fetchCategoryName,
     handleMenuClick,
-    handleUpvote,
-    handleDownvote,
+    handleVote,
     isMenuVisible,
   };
   return (
