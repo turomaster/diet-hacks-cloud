@@ -139,8 +139,8 @@ export function PostsProvider({ children }: Props) {
       }
       const existingVote = await checkIfVoteExists(postId);
       if (existingVote) {
-        await removeVote(postId);
-        await checkVote();
+        const removeResult = await removeVote(postId);
+        setPostVotes(removeResult);
         return;
       }
       const newUpvote = {
@@ -158,7 +158,8 @@ export function PostsProvider({ children }: Props) {
       };
       const postResult = await fetch(`/api/postVotes/${postId}`, req);
       if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
-      checkVote();
+      const allPostVotes = (await postResult.json()) as PostVotes[];
+      setPostVotes(allPostVotes);
     } catch (error) {
       setError(error);
     }
@@ -172,8 +173,8 @@ export function PostsProvider({ children }: Props) {
       }
       const existingVote = await checkIfVoteExists(postId);
       if (existingVote) {
-        await removeVote(postId);
-        await checkVote();
+        const removeResult = await removeVote(postId);
+        setPostVotes(removeResult);
         return;
       }
       const newDownvote = {
@@ -191,7 +192,8 @@ export function PostsProvider({ children }: Props) {
       };
       const postResult = await fetch(`/api/postVotes/${postId}`, req);
       if (!postResult.ok) throw new Error(`fetch Error: ${postResult.status}`);
-      checkVote();
+      const allPostVotes = (await postResult.json()) as PostVotes[];
+      setPostVotes(allPostVotes);
     } catch (error) {
       setError(error);
     }
@@ -227,6 +229,7 @@ export function PostsProvider({ children }: Props) {
       const deleteResult = await fetch(`/api/postVotes/${postId}`, req);
       if (!deleteResult.ok)
         throw new Error(`fetch Error: ${deleteResult.status}`);
+      return await deleteResult.json();
     } catch (error) {
       setError(error);
     }
