@@ -326,8 +326,13 @@ app.post('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
         returning *;
     `;
     const params = [postId, userId, voteType];
-    const result = await db.query(sql, params);
-    res.json(result.rows[0]);
+    await db.query(sql, params);
+    const sql2 = `
+      select *
+        from "postVotes"
+      `;
+    const result = await db.query<PostVotes[]>(sql2);
+    res.json(result.rows);
   } catch (err) {
     next(err);
   }
@@ -368,8 +373,13 @@ app.delete('/api/postVotes/:postId', authMiddleware, async (req, res, next) => {
         and "userId" = $2;
     `;
     const params = [postId, req.user?.userId];
-    const result = await db.query(sql, params);
-    res.json(result.rows[0]);
+    await db.query(sql, params);
+    const sql2 = `
+      select *
+        from "postVotes"
+      `;
+    const result = await db.query<PostVotes[]>(sql2);
+    res.json(result.rows);
   } catch (err) {
     next(err);
   }
