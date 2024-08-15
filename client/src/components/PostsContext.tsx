@@ -29,7 +29,7 @@ export type PostsContextValues = {
   handleViews: (post: Posts) => void;
   fetchCategoryName: (categoryName: string | null) => void;
   handleMenuClick: () => void;
-  handleVote: (postId: number, voteType: string) => void;
+  handleVote: (postId: number, type: string) => void;
   isMenuVisible: boolean | undefined;
 };
 
@@ -50,7 +50,7 @@ type Props = {
 
 export function PostsProvider({ children }: Props) {
   const [posts, setPosts] = useState<UserPost[] | Posts[]>([]);
-  const [postVotes, setPostVotes] = useState<PostVotes[]>([]);
+  const [postVotes, setPostVotes] = useState<PostVotes[] | undefined>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [error, setError] = useState<unknown>();
@@ -129,7 +129,7 @@ export function PostsProvider({ children }: Props) {
     }
   }
 
-  async function handleVote(postId: number, voteType: string) {
+  async function handleVote(postId: number, type: string) {
     try {
       if (!user) {
         alert('You must be logged in to vote.');
@@ -144,7 +144,7 @@ export function PostsProvider({ children }: Props) {
       const newVote = {
         userId: user?.userId,
         postId: postId,
-        voteType: voteType === 'upvote' ? 'upvote' : 'downvote',
+        voteType: type === 'upvote' ? 'upvote' : 'downvote',
       };
       const req = {
         method: 'POST',
@@ -167,7 +167,7 @@ export function PostsProvider({ children }: Props) {
   async function checkIfVoteExists(postId: number) {
     try {
       const totalVotes: PostVotes[] = [];
-      postVotes.forEach((vote) => {
+      postVotes?.forEach((vote) => {
         if (vote.postId === postId) {
           totalVotes.push(vote);
         }
@@ -193,7 +193,7 @@ export function PostsProvider({ children }: Props) {
       const deleteResult = await fetch(`/api/postVotes/${postId}`, req);
       if (!deleteResult.ok)
         throw new Error(`fetch Error: ${deleteResult.status}`);
-      return await deleteResult.json();
+      return (await deleteResult.json()) as PostVotes[];
     } catch (error) {
       setError(error);
     }
