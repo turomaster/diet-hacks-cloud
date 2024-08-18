@@ -168,7 +168,7 @@ export function PostsProvider({ children }: Props) {
     try {
       const totalVotes: PostVotes[] = [];
       postVotes?.forEach((vote) => {
-        if (vote.postId === postId) {
+        if (vote.postId === postId && user?.userId === vote.userId) {
           totalVotes.push(vote);
         }
       });
