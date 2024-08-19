@@ -1,4 +1,33 @@
-# full-stack-project
+# Diet Hacks
+
+A full stack React project for users who want to find and post diet hacks and tips.
+
+## Why I Built This
+
+My motivation for this project is my passion for healthy eating so I created a site in which users can post their tips or diet hacks to a community working on achieving their health goals.
+
+## Technologies Used
+
+- PostgreSQL
+- Express
+- React
+- Node.js
+- TypeScript
+- AWS
+
+## Live Demo
+
+Try the application live at ![http://ec2-52-20-71-100.compute-1.amazonaws.com/](http://ec2-52-20-71-100.compute-1.amazonaws.com/)
+
+## Features
+
+- Users can register and login
+- Users can create posts
+- Users can upvote or downvote posts
+- Users can comment on posts
+- Users can filter posts by categories
+
+## Preview
 
 ![DietHacks](https://github.com/user-attachments/assets/03d66a6c-0cd1-42cb-8849-0c23e9d5cd1b)
 
