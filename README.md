@@ -1,12 +1,6 @@
 # full-stack-project
 
-A full stack TypeScript solo project.
-
-# Improvements
-
-1. For my upvote and downvote feature, I reduced the number of fetch calls from the client to the server by half. I combined the GET request with my POST and DELETE endpoints on my Express server.
-
-2. I refactored two handler functions that had nearly identical code in `client\src\components\PostContext.tsx`. I solved this by using a single handler and passing an argument for the vote type, which uses a ternary operator to determine whether the handler should send a vote type of 'upvote' or 'downvote' in the POST request to the server.
+![DietHacks](https://github.com/user-attachments/assets/03d66a6c-0cd1-42cb-8849-0c23e9d5cd1b)
 
 # Challenges Encountered
 
