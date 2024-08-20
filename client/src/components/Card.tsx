@@ -1,6 +1,7 @@
 import { PiArrowFatDownFill, PiArrowFatUp } from 'react-icons/pi';
 import { PiArrowFatUpFill } from 'react-icons/pi';
 import { PiArrowFatDown } from 'react-icons/pi';
+import { GoComment } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { usePosts } from './usePosts';
 import { useUser } from './useUser';
@@ -50,7 +51,7 @@ export function Card({ post }: Props) {
         </div>
         <div className="card-body text-sm">{post.body}</div>
       </Link>
-      <div className="card-footer flex flex-wrap mt-4">
+      <div className="card-footer flex mt-4">
         <div className="flex basis-full justify-between">
           <div className="vote-actions flex items-center">
             {upvoteResult && (
@@ -78,9 +79,14 @@ export function Card({ post }: Props) {
                 onClick={() => handleVote(post.postId, 'downvote')}
               />
             )}
+            <Link to={`/post/${post.postId}`}>
+              <GoComment className="ml-2 text-xl" />
+            </Link>
           </div>
         </div>
-        <div className="basis-full pt-2">
+      </div>
+      <div className="flex">
+        <div className="flex basis-full pt-2">
           <p>@{post.username}</p>
         </div>
       </div>
