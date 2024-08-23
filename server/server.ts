@@ -285,20 +285,6 @@ app.get('/api/categories/:categoryName', async (req, res, next) => {
   }
 });
 
-app.get('/api/categories/trending', async (req, res, next) => {
-  try {
-    const sql = `
-      select *
-        from "posts"
-        order by "posts"."views" desc;
-    `;
-    const result = await db.query<Post[]>(sql);
-    res.json(result.rows);
-  } catch (err) {
-    next(err);
-  }
-});
-
 app.get('/api/postVotes', async (req, res, next) => {
   try {
     const sql = `

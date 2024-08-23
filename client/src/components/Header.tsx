@@ -67,7 +67,7 @@ export function Header({ isMobile, categories }: Props) {
           }>
           <div className="flex items-center space-x-2">
             <MdFastfood className="text-2xl" style={{ color: '#32CD32' }} />
-            <p className="text-lg">Diet Hacks</p>
+            <p className="text-xl">Diet Hacks</p>
           </div>
           <div ref={menu}>
             <RxHamburgerMenu onClick={handleMenuClick} className="text-2xl" />

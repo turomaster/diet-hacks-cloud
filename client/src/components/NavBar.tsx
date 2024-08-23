@@ -13,14 +13,9 @@ export function NavBar({ categories }: Props) {
       <nav>
         <ul className="flex flex-col text-center">
           <li className="mb-2 font-bold">Explore</li>
-          <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
+          <li className="rounded-lg mx-4 hover:bg-gray-200">
             <Link to="/" onClick={() => fetchCategoryName(null)}>
               Home
-            </Link>
-          </li>
-          <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-            <Link to="/" onClick={() => fetchCategoryName('trending')}>
-              Trending
             </Link>
           </li>
           <hr className="my-6 mx-auto w-40 border-black border-opacity-20" />
