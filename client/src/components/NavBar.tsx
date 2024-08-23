@@ -18,11 +18,6 @@ export function NavBar({ categories }: Props) {
               Home
             </Link>
           </li>
-          <li className="rounded-lg mx-4 mb-4 hover:bg-gray-200">
-            <Link to="/" onClick={() => fetchCategoryName('trending')}>
-              Trending
-            </Link>
-          </li>
           <hr className="my-6 mx-auto w-40 border-black border-opacity-20" />
           <li className="mb-2 font-bold">Categories</li>
           {categories.map((category) => (
