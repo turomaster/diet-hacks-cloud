@@ -18,7 +18,9 @@ My motivation for this project is my passion for healthy eating so I created a s
 ## Live Demo
 
 Try the application live at http://ec2-52-20-71-100.compute-1.amazonaws.com/
+
 User: guest
+
 Password: password
 
 ## Features
