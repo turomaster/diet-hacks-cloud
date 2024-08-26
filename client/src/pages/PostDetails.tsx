@@ -94,10 +94,13 @@ export function PostDetails({ isMobile, categories }: Props) {
 
   return (
     <div className="flex h-full">
-      <div className="flex">
+      <div className="fixed w-12 h-full">
         {!isMobile && <NavBar categories={categories} />}
       </div>
-      <div className="mt-12 basis-full px-8">
+      <div
+        className={
+          isMobile ? 'basis-full px-8 mt-12' : 'basis-full ml-52 mt-12 px-8'
+        }>
         {postId &&
           posts.map(
             (post) =>
