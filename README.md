@@ -41,7 +41,15 @@ Password: password
 ![DietHacks](https://github.com/user-attachments/assets/03d66a6c-0cd1-42cb-8849-0c23e9d5cd1b)
 
 ## Installation
-1. Install all dependencies with `npm install`.
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/your-repo-name.git
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd your-repo-name
+3. Install all dependencies with `npm install`.
 
 #### Create the database
 
