@@ -45,7 +45,7 @@ export function MobileMenu({ onSignInOrOut }: Props) {
   }
 
   return (
-    <div className="absolute top-[56px] inset-0 bg-white">
+    <div className="fixed top-[56px] inset-0 bg-white">
       <nav>
         <ul className="flex flex-col items-center text-center">
           <li className="rounded-lg mx-4 mb-4 bg-accent-gray w-80 mt-4">
