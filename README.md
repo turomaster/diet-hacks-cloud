@@ -20,14 +20,6 @@ A full stack React project for users who want to find and post diet hacks and ti
 - TypeScript
 - AWS
 
-## Live Demo
-
-Try the application live at http://ec2-52-20-71-100.compute-1.amazonaws.com/
-
-User: guest
-
-Password: password
-
 ## Features
 
 - Users can register and login
