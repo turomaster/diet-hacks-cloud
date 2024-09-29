@@ -11,6 +11,10 @@ A full stack React project for users who want to find and post diet hacks and ti
 - [Installation](#installation)
 - [Challenges Encountered](#challenges-encountered)
 
+## Preview
+
+![DietHacks](https://github.com/user-attachments/assets/03d66a6c-0cd1-42cb-8849-0c23e9d5cd1b)
+
 ## Technologies Used
 
 - PostgreSQL
@@ -27,10 +31,6 @@ A full stack React project for users who want to find and post diet hacks and ti
 - Users can upvote or downvote posts
 - Users can comment on posts
 - Users can filter posts by categories
-
-## Preview
-
-![DietHacks](https://github.com/user-attachments/assets/03d66a6c-0cd1-42cb-8849-0c23e9d5cd1b)
 
 ## Installation
 
