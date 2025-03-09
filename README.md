@@ -69,14 +69,6 @@ If your project will _not_ be using a database, edit `package.json` to remove th
    ```
 1. Later, when you wish to stop the development servers, type `Ctrl-C` in the terminal where the servers are running.
 
-#### Verify the client
-
-1. A React app has already been created for you.
-1. Take a minute to look over the code in `client/src/App.tsx` to get an idea of what it is doing.
-1. Go to the app in your browser. You should see the message from the server below the React logo, and in the browser console.
-   ![](md.assets/client-server.png)
-1. If you see the message from the server in your browser you are good to go, your client and server are communicating.
-
 #### Set up the database
 
 1. In your browser navigate to the site you used for your database design.
